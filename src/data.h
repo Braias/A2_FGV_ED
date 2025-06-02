@@ -1,12 +1,12 @@
-#ifndef dataHandling
-#define dataHandling
+#ifndef DATA_HANDLING_H
+#define DATA_HANDLING_H
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <fstream>
 
-namespace dataHandling{
+namespace DataHandling{
     struct document{
         int id;
         std::string name;
@@ -18,27 +18,14 @@ namespace dataHandling{
         int documentId;      
     };
 
-    std::vector<std::string> read_directory(const std::string &dir_path){
+    std::vector<std::string> read_directory(const std::string &dir_path);
+    document load_read_doc(const std::string &doc_path, int documentId);
 
-    };
+    std::string process_word(const std::string &word);
+    std::vector<processedWord> process_doc(const document &doc);
     
-    document load_read_doc(const std::string &doc_path, int documentId){
-
-    };
-
-    std::string process_word(const std::string &word){
-
-    };
-
-    std::vector<processedWord> process_doc(const document &doc){
-
-    };
-    
-    std::vector<std::vector<processedWord>> inverted_index(){
-
-    };
+    std::vector<std::vector<processedWord>> inverted_index();
 
 }
-
 
 #endif
