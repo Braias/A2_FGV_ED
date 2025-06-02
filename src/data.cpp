@@ -5,12 +5,14 @@
 #include <fstream>
 #include <filesystem>
 
+using namespace std;
+
 namespace dataHandling{
-    std::vector<std::string> read_directory(const std::string &dir_path){
+    vector<string> read_directory(const string &dir_path){
         // Cria um vetor de strings para o nome dos arquivos
-        std::vector<std::string> files;
+        vector<string> files;
         // Itera sobre todos os arquivos do diretorio
-        for (const auto& entry : std::filesystem::directory_iterator(dir_path)){
+        for (const auto& entry : filesystem::directory_iterator(dir_path)){
             if (entry.is_regular_file()) {
             // Se o arquivo 
             files.push_back(entry.path().filename().string());
@@ -19,8 +21,21 @@ namespace dataHandling{
         return files;
     }
 
-    document load_read_doc(const std::string &doc_path, int documentId){
+    string load_doc(const string &doc_path){
+        ifstream file (doc_path);
+
+        if (!file.is_open()){
+            return "";
+        }
         
-    }
+        string content;
+        string line;
+
+        while (getline(file, line)){
+            content += line;
+            content += ' ';
+        }
+        return content;
+    };
 
 }
