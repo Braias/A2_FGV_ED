@@ -1,30 +1,34 @@
 #ifndef DATA_HANDLING_H
 #define DATA_HANDLING_H
 
-#include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
+
+using namespace std;
 
 namespace DataHandling{
-    struct document{
+    struct Document{
         int id;
-        std::string name;
-        std::string content;
+        string name;
+        vector<string> content;
     };
 
-    struct processedWord {
-        std::string word;
-        int documentId;      
+    struct WordAppearance {
+        string word;
+        int document_id;
     };
 
-    std::vector<std::string> read_directory(const std::string &dir_path);
-    document load_read_doc(const std::string &doc_path, int documentId);
+    struct InvertedIndex {
+        vector<string> words;
+        vector<vector<int>> document_ids;
+    };
 
-    std::string process_word(const std::string &word);
-    std::vector<processedWord> process_doc(const document &doc);
-    
-    std::vector<std::vector<processedWord>> inverted_index();
+    vector<string> read_directory(const string &dir_path);
+    string load_doc(const string &doc_path);
+    Document read_doc(const string &doc_path, int document_id);
+
+    vector<WordAppearance> process_doc(const Document &doc);
+    InvertedIndex inverted_index(vector<WordAppearance> &word_vector);
 
 }
 
