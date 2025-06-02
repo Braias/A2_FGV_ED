@@ -7,16 +7,30 @@
 using namespace std;
 
 namespace DataHandling{
+
+    /**
+    * @brief Estrutura para documentos e sua identificação
+    *
+    * Contem uma id única que inicia em 1, nome do arquivo
+    * e vetor de palavras únicas que compõem seu conteúdo
+    */
     struct Document{
-        int id;
-        string name;
-        vector<string> content;
+        int id; ///< ID único do documento (começa em 1)
+        string name; ///< Caminho completo para o documento
+        vector<string> content; ///< Palavras únicas encontradas no documento
     };
 
+    /**
+    * @brief Representa uma aparição de uma palavra em um documento
+    *
+    * Estrutura usada para armazenar os pares (palavra, ID) que podem
+    * ser inseridos facilmente na estrura de inverted index.
+    */
     struct WordAppearance {
-        string word;
-        int document_id;
+        string word; ///< Palavra encontrada
+        int document_id; ///< Documento na qual foi localizada
     };
+
 
     struct InvertedIndex {
         vector<string> words;
@@ -47,7 +61,18 @@ namespace DataHandling{
     */
     Document read_doc(const string &doc_path, int document_id, string conteudo);
 
+    /**
+    * @brief Organiza as componentes de Document em um vetor de estruturas do tipo WordAppearance
+    * @param doc Document a ser transformado em vetor
+    * @return Vetor de WordAppearance
+    */
     vector<WordAppearance> process_doc(const Document &doc);
+
+    /**
+    * @brief Baseado em vetores de WordAppearance cira um inverted_index
+    * @param word_vector vetor resultando de process_doc
+    * @return Estrutura do tipo InvertedIndex
+    */
     InvertedIndex inverted_index(vector<WordAppearance> &word_vector);
 
 }
