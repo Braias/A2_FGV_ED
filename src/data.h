@@ -45,7 +45,7 @@ namespace DataHandling{
     * @param conteudo conteúdo do documento
     * @return Estrutura Document contendo um vetor de palavras únicas, nome e ID
     */
-    Document read_doc(const string &doc_path, int document_id);
+    Document read_doc(const string &doc_path, int document_id, string conteudo);
 
     vector<WordAppearance> process_doc(const Document &doc);
     InvertedIndex inverted_index(vector<WordAppearance> &word_vector);
