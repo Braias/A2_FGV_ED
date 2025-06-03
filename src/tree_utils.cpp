@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <string>
 
+// TODO: Adicionar printIndex (mesma ideia de printTree)
+
 using namespace std;
 
 void printTreeRecursive(Node* node, string prefix, bool left) {
