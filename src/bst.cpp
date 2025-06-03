@@ -7,6 +7,13 @@
 
 namespace BST {
 
+BinaryTree* create() {
+    BinaryTree* tree = new BinaryTree;
+    tree->root = nullptr;
+    tree->NIL = nullptr;
+    return tree;
+}
+
 InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
 
 };
