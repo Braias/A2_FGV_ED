@@ -28,13 +28,14 @@ namespace DataHandling{
     */
     struct WordAppearance {
         string word; ///< Palavra encontrada
-        int document_id; ///< Documento na qual foi localizada
+        vector<int> document_ids; ///< Documentos nos quais foi localizada
     };
 
-
+    /**
+     * @brief Estrutura de nós com as informações para a criação da árvore
+     */
     struct InvertedIndex {
-        vector<string> words;
-        vector<vector<int>> document_ids;
+        vector<WordAppearance> node;
     };
 
     /**
@@ -69,11 +70,11 @@ namespace DataHandling{
     vector<WordAppearance> process_doc(const Document &doc);
 
     /**
-    * @brief Baseado em vetores de WordAppearance cira um inverted_index
+    * @brief Baseado em vetores de WordAppearance cria um inverted_index
     * @param word_vector vetor resultando de process_doc
     * @return Estrutura do tipo InvertedIndex
     */
-    InvertedIndex inverted_index(vector<WordAppearance> &word_vector);
+    InvertedIndex create_inverted_index(vector<WordAppearance> &word_vector);
 
 }
 
