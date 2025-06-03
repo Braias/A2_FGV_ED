@@ -47,8 +47,8 @@ namespace DataHandling{
         doc.id = document_id;
         doc.name = file_name;
 
-        // Tokenização do conteúdo
-        vector<string> tokens;
+        // Separação das frases em palavras
+        vector<string> words;
         size_t start = 0;
         size_t end = 0;
         
@@ -56,40 +56,26 @@ namespace DataHandling{
             // Encontra próximo espaço
             end = conteudo.find(' ', start);
             
-            // Extrai token
-            string token = conteudo.substr(start, end - start);
-            if (!token.empty()) {
-                tokens.push_back(token);
+            // Extrai palavra
+            string word = conteudo.substr(start, end - start);
+            if (!word.empty()) {
+                words.push_back(word);
             }
             
             // Fim da string
             if (end == string::npos) break;
             
-            // Avança para próximo token
+            // Avança para próxima palavra
             start = end + 1;
         };
-
-        vector<string> unique_tokens;
-        for (const string& token : tokens) {
-            bool exists = false;
-            for (const string& unique : unique_tokens) {
-                if (unique == token) {
-                    exists = true;
-                    break;
-                }
-            }
-            if (!exists) {
-                unique_tokens.push_back(token);
-            }
-        }
-        doc.content = unique_tokens;
+        doc.content = words;
         return doc;
     };
 
     vector<WordAppearance> process_doc(const Document &doc){
         vector<WordAppearance> word_appearances;
 
-        // Como todas as palavras são únicas, apenas insere as palavras
+        // Insere palavras
         for (const string& word : doc.content) {
             WordAppearance entry;
             entry.word = word;
@@ -98,6 +84,4 @@ namespace DataHandling{
         }
         return word_appearances;
     };
-
-
 }

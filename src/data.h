@@ -32,13 +32,6 @@ namespace DataHandling{
     };
 
     /**
-     * @brief Estrutura de nós com as informações para a criação da árvore
-     */
-    struct InvertedIndex {
-        vector<WordAppearance> node;
-    };
-
-    /**
     * @brief Lê os arquivos do diretório providenciado
     * @param dir_path caminho para o diretório
     * @return Vetor de caminhos para os documentos do diretório
@@ -68,14 +61,6 @@ namespace DataHandling{
     * @return Vetor de WordAppearance
     */
     vector<WordAppearance> process_doc(const Document &doc);
-
-    /**
-    * @brief Baseado em vetores de WordAppearance cria um inverted_index
-    * @param word_vector vetor resultando de process_doc
-    * @return Estrutura do tipo InvertedIndex
-    */
-    InvertedIndex create_inverted_index(vector<WordAppearance> &word_vector);
-
 }
 
 #endif
