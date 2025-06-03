@@ -2,10 +2,14 @@
 #define BST_H
 #include "tree_utils.h"
 
+namespace BST {
+
 Node* treeSearch(Node* root, std::string word);
 
 Node* createNode(wordStruct wordStruct);
 
 Node* insert(Node* root, wordStruct wordStruct);
 
-#endif 
+};
+
+#endif

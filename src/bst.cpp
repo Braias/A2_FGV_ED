@@ -1,10 +1,12 @@
 #include "tree_utils.h"
+#include "bst.h"
 #include <iostream>
 
 // TODO: Fazer checagem para palavras unicas (evitar duplicatas no documentIds)
 
+using namespace BST;
 
-Node* treeSearch(Node* root, std::string word) {
+Node* BST::treeSearch(Node* root, std::string word) {
     if (root == nullptr || root->word == word) {
         return root;
     }
@@ -16,7 +18,7 @@ Node* treeSearch(Node* root, std::string word) {
     }
 };
 
-Node* createNode(wordStruct wordStruct) {
+Node* BST::createNode(wordStruct wordStruct) {
     Node* n = new Node();
     n->word = wordStruct.word;
     n->left = nullptr;
@@ -26,7 +28,7 @@ Node* createNode(wordStruct wordStruct) {
     return n;
 }
 
-Node* insert(Node* root, wordStruct wordStruct) {
+Node* BST::insert(Node* root, wordStruct wordStruct) {
     if (root == nullptr) {
         Node* newNode = createNode(wordStruct);
         newNode->documentIds = wordStruct.documentIds;
