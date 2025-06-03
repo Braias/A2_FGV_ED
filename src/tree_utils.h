@@ -36,12 +36,7 @@ struct SearchResult {
     int numComparisons;
 };
 
-BinaryTree* create();
-
-InsertResult insert(BinaryTree* tree, const std::string& word, int documentId);
-
-SearchResult search(BinaryTree* tree, const std::string& word);
-
-void destroy(BinaryTree* tree);
+void printIndex(BinaryTree* tree);
+void printTree(BinaryTree* tree);
 
 #endif

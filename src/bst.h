@@ -3,13 +3,11 @@
 #include "tree_utils.h"
 
 namespace BST {
+    BinaryTree* create();
+    InsertResult insert(BinaryTree* tree, const std::string& word, int documentId);
+    SearchResult search(BinaryTree* tree, const std::string& word);
+    void destroy(BinaryTree* tree);
+}
 
-Node* treeSearch(Node* root, std::string word);
-
-Node* createNode(wordStruct wordStruct);
-
-Node* insert(Node* root, wordStruct wordStruct);
-
-};
 
 #endif
