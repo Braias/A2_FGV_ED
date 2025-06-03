@@ -4,7 +4,7 @@
 
 // TODO: Fazer checagem para palavras unicas (evitar duplicatas no documentIds)
 
-using namespace BST;
+namespace BST {
 
 Node* BST::treeSearch(Node* root, std::string word) {
     if (root == nullptr || root->word == word) {
@@ -77,4 +77,19 @@ int main() {
     }
 
     return 0;
+}
+
+void destroyNode(Node* node) {
+    if (node != nullptr) {
+        destroyNode(node->left);
+        destroyNode(node->right);
+        delete node;
+    }
+}
+
+void destroy(BinaryTree* tree) {
+    destroyNode(tree->root);
+    delete tree;
+};
+
 }
