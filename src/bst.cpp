@@ -51,34 +51,6 @@ Node* BST::insert(Node* root, wordStruct wordStruct) {
     return root;
 };
 
-#include "tree_utils.h"
-#include "bst.h"
-#include <iostream>
-
-int main() {
-    Node* root = nullptr;
-
-    wordStruct w1 = {"maca", {1, 2}};
-    wordStruct w2 = {"banana", {3}};
-    wordStruct w3 = {"laranja", {2, 4}};
-    root = insert(root, w1);
-    root = insert(root, w2);
-    root = insert(root, w3);
-
-    Node* result = treeSearch(root, "maca");
-    if (result) {
-        std::cout << "Palavra encontrada: " << result->word << "\nDocumentos: ";
-        for (int id : result->documentIds) {
-            std::cout << id << " ";
-        }
-        std::cout << std::endl;
-    } else {
-        std::cout << "Palavra nao encontrada.\n";
-    }
-
-    return 0;
-}
-
 void destroyNode(Node* node) {
     if (node != nullptr) {
         destroyNode(node->left);
