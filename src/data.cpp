@@ -41,7 +41,7 @@ namespace DataHandling{
     Document read_doc(const string &doc_path, int document_id, string conteudo){
         // Extrai o nome do arquivo do caminho completo
         size_t pos = doc_path.find_last_of("/\\");
-        string file_name = (pos == string::npos) ? doc_path : doc_path.substr(pos + 1);
+        string file_name = doc_path.substr(pos + 1);
 
         Document doc;
         doc.id = document_id;
@@ -84,7 +84,20 @@ namespace DataHandling{
         }
         doc.content = unique_tokens;
         return doc;
-    }
+    };
+
+    vector<WordAppearance> process_doc(const Document &doc){
+        vector<WordAppearance> word_appearances;
+
+        // Como todas as palavras são únicas, apenas insere as palavras
+        for (const string& word : doc.content) {
+            WordAppearance entry;
+            entry.word = word;
+            entry.document_ids.push_back(doc.id);
+            word_appearances.push_back(entry);
+        }
+        return word_appearances;
+    };
 
 
 }
