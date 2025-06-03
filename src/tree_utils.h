@@ -19,4 +19,9 @@ struct BinaryTree {
     Node* NIL;  // usado na RBT (Opcional)
 };
 
+struct wordStruct {
+    std::string word;
+    std::vector<int> documentIds;
+};
+
 #endif
