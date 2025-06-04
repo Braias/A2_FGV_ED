@@ -17,6 +17,7 @@ BinaryTree* create() {
 
 SearchResult search(BinaryTree* tree, const std::string& word) {
     SearchResult result = {0, {}, 0.0, 0};
+
     if (tree->root == nullptr) {
         return result;
     };
@@ -24,17 +25,18 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
     auto start = system_clock::now();
 
     Node* current = tree->root;
-    while (current->word != word) {
+    do {
         result.numComparisons ++;
         if (current->word == word) {
             result.found = 1;
             result.documentIds = current->documentIds;
+            break;
         } else if (current->word < word) {
             current = current->right;
         } else {
             current = current->left;
         }
-    };
+    }while (current != nullptr);
 
     auto stop = system_clock::now();
     result.executionTime = duration<double>(stop - start).count();
