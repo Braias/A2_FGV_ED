@@ -15,7 +15,7 @@ namespace DataHandling{
         for (const auto& entry : filesystem::directory_iterator(dir_path)){
             if (entry.is_regular_file()) {
             // Se o arquivo 
-            files.push_back(entry.path().filename().string());
+            files.push_back(entry.path().string());
             }
         }
         return files;
