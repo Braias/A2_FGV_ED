@@ -22,9 +22,5 @@ $(AVL_EXEC): $(AVL_SOURCES)
 $(RBT_EXEC): $(RBT_SOURCES)
 	$(CXX) $(CXXFLAGS) -o $(RBT_EXEC) $(RBT_SOURCES)
 
-clean:
-	rm -f $(BST_EXEC) $(AVL_EXEC) $(RBT_EXEC)
-
-.PHONY: all clean
 
 
