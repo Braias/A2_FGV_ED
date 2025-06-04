@@ -32,7 +32,7 @@ namespace DataHandling{
     };
 
     /**
-    * @brief Lê os arquivos do diretório providenciado
+    * @brief Lê o caminho dos arquivos do diretório providenciado
     * @param dir_path caminho para o diretório
     * @return Vetor de caminhos para os documentos do diretório
     */
