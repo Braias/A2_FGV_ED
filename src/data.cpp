@@ -85,7 +85,7 @@ namespace DataHandling{
         for (const string& word : doc.content) {
             WordAppearance entry;
             entry.word = word;
-            entry.document_ids.push_back(doc.id);
+            entry.document_id = doc.id;
             word_appearances.push_back(entry);
         }
         return word_appearances;

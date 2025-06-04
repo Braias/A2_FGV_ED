@@ -28,7 +28,7 @@ namespace DataHandling{
     */
     struct WordAppearance {
         string word; ///< Palavra encontrada
-        vector<int> document_ids; ///< Documentos nos quais foi localizada
+        int document_id; ///< Documentos nos quais foi localizada
     };
 
     /**
