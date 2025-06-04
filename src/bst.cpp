@@ -16,11 +16,11 @@ BinaryTree* create() {
 }
 
 SearchResult search(BinaryTree* tree, const std::string& word) {
+    SearchResult result = {0, {}, 0.0, 0};
     if (tree->root == nullptr) {
-        return;
+        return result;
     };
 
-    SearchResult result = {0, {}, 0.0, 0};
     auto start = system_clock::now();
 
     Node* current = tree->root;
@@ -73,7 +73,6 @@ InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
     } else {
         Node* current = tree->root;
         Node* parent = nullptr;
-        int currentHeight = 1;
 
         // Encontrar posição de inserção
         while (current != nullptr) {
