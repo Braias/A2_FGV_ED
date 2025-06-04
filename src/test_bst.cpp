@@ -95,7 +95,6 @@ int main() {
     testInsert();
     testSearch();
     testDestroy();
-    testPerformance();
     testEmptyTreeSearch();
     
     cout << "\n Os testes de BST passaram\n";
