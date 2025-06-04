@@ -49,6 +49,7 @@
         "variant": "cpp",
         "iostream": "cpp",
         "istream": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "xstring": "cpp"
     }
 }
