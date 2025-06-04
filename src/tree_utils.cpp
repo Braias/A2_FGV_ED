@@ -7,6 +7,27 @@
 
 using namespace std;
 
+void printIndexRecursive(Node* node) {
+    if (node == nullptr){
+	    return;
+    };
+    
+    printIndexRecursive(node->left);
+    cout << node->word << ": ";
+    for (size_t i = 0; i < node->documentIds.size(); ++i) {
+        cout << node->documentIds[i];
+        if (i < node->documentIds.size() - 1)
+            cout << ", ";
+    }
+    cout << endl;
+    printIndexRecursive(node->right);
+}
+
+void printIndex(BinaryTree* tree) {
+    printIndexRecursive(tree->root);
+}
+
+
 void printTreeRecursive(Node* node, string prefix, bool left) {
     if (node == nullptr) {
         return;
