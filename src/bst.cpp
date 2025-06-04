@@ -17,10 +17,6 @@ BinaryTree* create() {
     return tree;
 }
 
-InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
-
-};
-
 SearchResult search(BinaryTree* tree, const std::string& word) {
     if (tree->root == nullptr) {
         return;
