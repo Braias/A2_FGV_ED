@@ -59,17 +59,6 @@ void perform_search(BinaryTree* bst) {
 
 
 int main(int argc, char* argv[]) {
-    // vector<string> file_paths = collect_input();
-    // if (file_paths.empty()) {
-    //     return 0;  
-    // }
-    // BinaryTree* bst = construct_bst(file_paths);
-    // perform_search(bst);
-    // BST::destroy(bst);
-    // return 1;
-    // ./<arvore> search <n_docs> <diretório>
-    // ./<arvore> stats <n_docs> <diretório>
-
     if(argc != 4){
         cout << "Numero insuficiente de Argumentos!";
         return 0;
@@ -79,6 +68,7 @@ int main(int argc, char* argv[]) {
         int n_docs = stoi(argv[2]);
         string directory_path = argv[3];
         BinaryTree* bst;
+
         if(mode == "search"){
             cout << "----------PROCURANDO DOCUMENTOS----------\n";
 
@@ -86,6 +76,7 @@ int main(int argc, char* argv[]) {
                 cout << n_docs << " - numero de documnentos invalido";
                 return 0;  
             }
+            
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             bst = construct_bst(doc_paths);
 
