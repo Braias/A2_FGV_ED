@@ -1,39 +1,30 @@
-# Diretórios
-SRC_DIR = src
-BIN_DIR = bin
-
-# Compilador e flags
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17
+CXXFLAGS = -std=c++17 -Wall -Isrc
+SRCDIR = src
 
-# Arquivos fonte
-SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-HDRS = $(wildcard $(SRC_DIR)/*.h)
+BST_EXEC = bst_main
+AVL_EXEC = avl_main
+RBT_EXEC = rbt_main
 
-# Executáveis
-TARGETS = main_avl main_bst main_rbt test_avl test_bst test_rbt
 
-# Geração dos binários
-all: $(TARGETS)
+BST_SOURCES = $(SRCDIR)/main_bst.cpp $(SRCDIR)/bst.cpp $(SRCDIR)/data.cpp $(SRCDIR)/tree_utils.cpp
+AVL_SOURCES = $(SRCDIR)/main_avl.cpp $(SRCDIR)/avl.cpp $(SRCDIR)/data.cpp $(SRCDIR)/tree_utils.cpp
+RBT_SOURCES = $(SRCDIR)/main_rbt.cpp $(SRCDIR)/rbt.cpp $(SRCDIR)/data.cpp $(SRCDIR)/tree_utils.cpp
 
-main_avl: $(SRC_DIR)/main_avl.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/main_avl.cpp $(filter-out $(SRC_DIR)/main_bst.cpp $(SRC_DIR)/main_rbt.cpp $(SRC_DIR)/test_%.cpp, $(SRCS))
+all: $(BST_EXEC) $(AVL_EXEC) $(RBT_EXEC)
 
-main_bst: $(SRC_DIR)/main_bst.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/main_bst.cpp $(filter-out $(SRC_DIR)/main_avl.cpp $(SRC_DIR)/main_rbt.cpp $(SRC_DIR)/test_%.cpp, $(SRCS))
+$(BST_EXEC): $(BST_SOURCES)
+	$(CXX) $(CXXFLAGS) -o $(BST_EXEC) $(BST_SOURCES)
 
-main_rbt: $(SRC_DIR)/main_rbt.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/main_rbt.cpp $(filter-out $(SRC_DIR)/main_avl.cpp $(SRC_DIR)/main_bst.cpp $(SRC_DIR)/test_%.cpp, $(SRCS))
+$(AVL_EXEC): $(AVL_SOURCES)
+	$(CXX) $(CXXFLAGS) -o $(AVL_EXEC) $(AVL_SOURCES)
 
-test_avl: $(SRC_DIR)/test_avl.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/test_avl.cpp $(filter-out $(SRC_DIR)/main_%.cpp $(SRC_DIR)/test_bst.cpp $(SRC_DIR)/test_rbt.cpp, $(SRCS))
+$(RBT_EXEC): $(RBT_SOURCES)
+	$(CXX) $(CXXFLAGS) -o $(RBT_EXEC) $(RBT_SOURCES)
 
-test_bst: $(SRC_DIR)/test_bst.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/test_bst.cpp $(filter-out $(SRC_DIR)/main_%.cpp $(SRC_DIR)/test_avl.cpp $(SRC_DIR)/test_rbt.cpp, $(SRCS))
-
-test_rbt: $(SRC_DIR)/test_rbt.cpp $(SRCS) $(HDRS)
-	$(CXX) $(CXXFLAGS) -o $@ $(SRC_DIR)/test_rbt.cpp $(filter-out $(SRC_DIR)/main_%.cpp $(SRC_DIR)/test_avl.cpp $(SRC_DIR)/test_bst.cpp, $(SRCS))
-
-# Limpeza dos binários
 clean:
-	rm -f $(TARGETS)
+	rm -f $(BST_EXEC) $(AVL_EXEC) $(RBT_EXEC)
+
+.PHONY: all clean
+
+
