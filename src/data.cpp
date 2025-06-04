@@ -8,7 +8,7 @@
 using namespace std;
 
 namespace DataHandling{
-    vector<string> read_directory(const string &dir_path){
+    vector<string> read_directory(const string &dir_path, const int limit){
         // Cria um vetor de strings para o nome dos arquivos
         vector<string> files;
 
@@ -18,10 +18,15 @@ namespace DataHandling{
             return files;
         }
         // Itera sobre todos os arquivos do diretorio
+        int count = 0;
         for (const auto& entry : filesystem::directory_iterator(dir_path)){
+            count ++;
             if (entry.is_regular_file()) {
                 // Se o arquivo 
                 files.push_back(entry.path().string());
+            }
+            if(count == limit){
+                return files;            
             }
         }
         return files;

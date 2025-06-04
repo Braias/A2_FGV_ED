@@ -36,7 +36,7 @@ namespace DataHandling{
     * @param dir_path caminho para o diretório
     * @return Vetor de caminhos para os documentos do diretório
     */
-    vector<string> read_directory(const string &dir_path);
+    vector<string> read_directory(const string &dir_path,const int limit);
 
     /**
     * @brief Carrega o documento de acordo com o path providenciado
