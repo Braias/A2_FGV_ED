@@ -8,7 +8,7 @@ using namespace std;
 using namespace chrono;
 
 namespace BST {
-
+    // Função que cria a árvore binária de busca
     BinaryTree* create() {
         BinaryTree* tree = new BinaryTree;
         tree->root = nullptr;
@@ -16,16 +16,21 @@ namespace BST {
         return tree;
     }
 
+    // Função de busca do de um determinado nó
+    // Verifica se existe um nó com uma determinada palavra e devolve o tempo decorrido, o número de comparações e em quais documentos ela se encontra
     SearchResult search(BinaryTree* tree, const std::string& word) {
         SearchResult result = {0, {}, 0.0, 0};
-
+        
+        // Verifica a existência da árvore
         if (tree->root == nullptr) {
             return result;
         };
 
+        // Começa o cronômetro
         auto start = system_clock::now();
 
         Node* current = tree->root;
+        // Loop de comparação
         do {
             result.numComparisons ++;
             if (current->word == word) {
@@ -39,13 +44,15 @@ namespace BST {
             }
         }while (current != nullptr);
 
+        // Para o relógio
         auto stop = system_clock::now();
         result.executionTime = duration<double>(stop - start).count();
         return result;    
     };
 
-
+    // Função para deletar um determinado nó da árvore
     void destroyNode(Node* node) {
+        // Caso o nó não seja nulo, o nó e seus filhos são destruídos
         if (node != nullptr) {
             destroyNode(node->left);
             destroyNode(node->right);
@@ -53,13 +60,17 @@ namespace BST {
         }
     }
 
+    // Função para deletar a árvore
     void destroy(BinaryTree* tree) {
         destroyNode(tree->root);
         delete tree;
     };
 
+    // Função de inserção na árvore binária de busca
+    // Insere um novo nó (palavra) na árvore
     InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
         InsertResult result;
+        // Inicializa o número de comparações e começa o cronômetro
         result.numComparisons = 0;
         auto start = high_resolution_clock::now();
 
@@ -107,6 +118,7 @@ namespace BST {
             }
         }
 
+        // Para o cronômetro
         auto end = high_resolution_clock::now();
         result.executionTime = duration<double>(end - start).count();
         return result;
