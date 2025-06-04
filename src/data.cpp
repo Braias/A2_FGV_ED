@@ -11,11 +11,17 @@ namespace DataHandling{
     vector<string> read_directory(const string &dir_path){
         // Cria um vetor de strings para o nome dos arquivos
         vector<string> files;
+
+        // Verifica se caminho passado é válido
+        if(!filesystem::exists(dir_path)){
+            std::cout << "Caminho Inválido";
+            return files;
+        }
         // Itera sobre todos os arquivos do diretorio
         for (const auto& entry : filesystem::directory_iterator(dir_path)){
             if (entry.is_regular_file()) {
-            // Se o arquivo 
-            files.push_back(entry.path().string());
+                // Se o arquivo 
+                files.push_back(entry.path().string());
             }
         }
         return files;
