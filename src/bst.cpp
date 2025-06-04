@@ -3,8 +3,6 @@
 #include <iostream>
 #include <chrono>
 
-// TODO: Adicionar insert
-
 using namespace std;
 using namespace chrono;
 
@@ -57,8 +55,6 @@ void destroy(BinaryTree* tree) {
     delete tree;
 };
 
-}
-
 InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
     InsertResult result;
     result.numComparisons = 0;
@@ -110,4 +106,5 @@ InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
     auto end = high_resolution_clock::now();
     result.executionTime = duration<double>(end - start).count();
     return result;
+}
 }
