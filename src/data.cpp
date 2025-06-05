@@ -22,7 +22,7 @@ namespace DataHandling{
         for (const auto& entry : filesystem::directory_iterator(dir_path)){
             count ++;
             if (entry.is_regular_file()) {
-                // Se o arquivo 
+                // Se o arquivo é um dos arquivos padrão do sistema, adiciona o caminho dele a files 
                 files.push_back(entry.path().string());
             }
             if(count == limit){

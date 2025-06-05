@@ -8,7 +8,6 @@ using namespace std;
 using namespace chrono;
 
 namespace BST {
-    // Função que cria a árvore binária de busca
     BinaryTree* create() {
         BinaryTree* tree = new BinaryTree;
         tree->root = nullptr;
@@ -16,8 +15,6 @@ namespace BST {
         return tree;
     }
 
-    // Função de busca do de um determinado nó
-    // Verifica se existe um nó com uma determinada palavra e devolve o tempo decorrido, o número de comparações e em quais documentos ela se encontra
     SearchResult search(BinaryTree* tree, const std::string& word) {
         SearchResult result = {0, {}, 0.0, 0};
         
@@ -50,7 +47,6 @@ namespace BST {
         return result;    
     };
 
-    // Função para deletar um determinado nó da árvore
     void destroyNode(Node* node) {
         // Caso o nó não seja nulo, o nó e seus filhos são destruídos
         if (node != nullptr) {
@@ -60,14 +56,11 @@ namespace BST {
         }
     }
 
-    // Função para deletar a árvore
     void destroy(BinaryTree* tree) {
         destroyNode(tree->root);
         delete tree;
     };
 
-    // Função de inserção na árvore binária de busca
-    // Insere um novo nó (palavra) na árvore
     InsertResult insert(BinaryTree* tree, const std::string& word, int documentId) {
         InsertResult result;
         // Inicializa o número de comparações e começa o cronômetro

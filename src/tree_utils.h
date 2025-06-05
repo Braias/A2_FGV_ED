@@ -59,13 +59,29 @@ struct SearchResult {
 };
 
 /**
+ * @brief Função que printa o index recursivamente, usado por printIndex
+ * @param node Nó que será printado
+ */
+void printIndexRecursive(Node* node);
+
+/**
  * @brief Função que recebe uma árvore e mostra no console as palavras da árvore seguindo a ordem root->esquerda->direita
  * e o id dos documentos em que cada palavra aparece
+ * @param tree ponteiro para a raíz da árvore
  */
 void printIndex(BinaryTree* tree);
 
 /**
+ * @brief Função que printa a estrutura da árvore recursivamente, usado por printTree
+ * @param node Nó para ser printado
+ * @param prefix Usado para desenhar a estrutura da árvore
+ * @param left Indica se o desenho é de um nó a esquerda ou direita
+ */
+void printTreeRecursive(Node* node, std::string prefix, bool left);
+
+/**
  * @brief Função que recebe uma árvore e mostra no console a estrutura hierárquica da árvore
+ * @param tree ponteiro para a raíz da árvore
  */
 void printTree(BinaryTree* tree);
 
