@@ -112,21 +112,6 @@ void printTree(BinaryTree* tree) {
     printTreeRecursive(tree->root, "", false);
 }
 
-void transplant(Node* u, Node* v) {
-    // Não faz sentido substituir a raíz de uma árvore por outra
-    if(u->parent == nullptr) {
-        return;
-    } else if(u == u->parent->left) {
-        u->parent->left = v;
-    } else {
-        u->parent->right = v;
-    }
-
-    if(v != nullptr) {
-        v->parent = u->parent;
-    }
-}
-
 int get_height(Node* node){
     if(node == nullptr){
         return 0;
@@ -135,30 +120,67 @@ int get_height(Node* node){
 };
 
 void new_height(Node* node){
+    if (node == nullptr) return;
     // Depois da rotação, atualiza a altura
     node->height = 1 + max(get_height(node->left), get_height(node->right));
 };
 
-void rotateLeft(Node* root) {
-    Node* newRoot = root->right;
+void transplant(Node*& treeRoot, Node* u, Node* v) {
+    if (u->parent == nullptr) {
+        treeRoot = v;  // u is the actual root
+    } else if (u == u->parent->left) {
+        u->parent->left = v;
+    } else {
+        u->parent->right = v;
+    }
 
-    transplant(newRoot, newRoot->left);
-    transplant(root, newRoot);
+    if (v != nullptr) {
+        v->parent = u->parent;
+    }
+}
+
+void rotate_left(Node*& treeRoot, Node* root) {
+    Node* newRoot = root->right;
+    if (newRoot == nullptr) return;
+
+    root->right = newRoot->left;
+    if (newRoot->left != nullptr) {
+        newRoot->left->parent = root;
+    }
+
+    transplant(treeRoot, root, newRoot);
+
     newRoot->left = root;
     root->parent = newRoot;
 
-    new_height(root);      // atualiza o nó que foi para baixo
-    new_height(newRoot);  // atualiza a nova raiz da subárvore
+    new_height(root);
+    new_height(newRoot);
 }
 
-void rotateRight(Node* root) {
+void rotate_right(Node*& treeRoot, Node* root) {
     Node* newRoot = root->left;
+    if (newRoot == nullptr) return;
 
-    transplant(newRoot, newRoot->right);
-    transplant(root, newRoot);
+    root->left = newRoot->right;
+    if (newRoot->right != nullptr) {
+        newRoot->right->parent = root;
+    }
+
+    transplant(treeRoot, root, newRoot);
+
     newRoot->right = root;
     root->parent = newRoot;
 
-    new_height(root);      // atualiza o nó que foi para baixo
-    new_height(newRoot);  // atualiza a nova raiz da subárvore
+    new_height(root);
+    new_height(newRoot);
+}
+
+void rotate_left_right(Node*& treeRoot, Node* root) {
+    rotate_left(treeRoot, root->left);
+    rotate_right(treeRoot, root);
+}
+
+void rotate_right_left(Node*& treeRoot, Node* root) {
+    rotate_right(treeRoot, root->right);
+    rotate_left(treeRoot, root);
 }

@@ -59,48 +59,83 @@ struct SearchResult {
 };
 
 /**
- * @brief Cria e inicializa uma nova árvore binária de busca.
+ * @brief Cria e inicializa uma nova árvore binária de busca
  *
- * @return Ponteiro para a estrutura BinaryTree recém-criada.
+ * @return Ponteiro para a estrutura BinaryTree recém-criada
  */
 BinaryTree* create();
 
-// TODO: implementar funções de rotação
 /**
- * @brief Faz o pai do primeiro nó apontar para o segundo nó
- */
-void transplant(Node* u, Node* v);
-
-Node* rotate_left(Node* node);
-
-Node* rotate_right(Node* node);
-
-Node* rotate_left_right(Node* node);
-
-Node* rotate_right_left(Node* node);
-
-/**
- * @brief Realiza uma busca por uma palavra na árvore binária de busca.
+ * @brief Substitui o nó u pelo nó v na árvore, ajustando os ponteiros do pai
+ * 
+ * Se u for a raíz da árvore, a raíz é atualizada para v
  *
- * @param tree Ponteiro para a árvore onde será feita a busca.
- * @param word Palavra a ser procurada.
- * @return Estrutura SearchResult indicando se a palavra foi encontrada e os IDs associados.
+ * @param treeRoot Referência para o ponteiro da raíz da árvore
+ * @param u Nó a ser substituído
+ * @param v Nó que ocupará o lugar de u
+ */
+void transplant(Node*& treeRoot, Node* u, Node* v);
+
+/**
+ * @brief Realiza uma rotação simples à esquerda na subárvore com raíz root
+ * 
+ * @param treeRoot Referência para a raíz da árvore
+ * @param root Ponteiro para o nó onde a rotação será aplicada
+ */
+void rotate_left(Node*& treeRoot, Node* root);
+
+/**
+ * @brief Realiza uma rotação simples à direita na subárvore com raíz root
+ * 
+ * @param treeRoot Referência para a raíz da árvore
+ * @param root Ponteiro para o nó onde a rotação será aplicada
+ */
+void rotate_right(Node*& treeRoot, Node* root);
+
+/**
+ * @brief Realiza uma rotação dupla esquerda-direita
+ * 
+ * Primeiro aplica uma rotação à esquerda no filho esquerdo de root,
+ * depois aplica uma rotação à direita no próprio root
+ * 
+ * @param treeRoot Referência para a raíz da árvore
+ * @param root Ponteiro para o nó onde a rotação será aplicada
+ */
+void rotate_left_right(Node*& treeRoot, Node* root);
+
+/**
+ * @brief Realiza uma rotação dupla direita-esquerda
+ * 
+ * Primeiro aplica uma rotação à direita no filho direito de root,
+ * depois aplica uma rotação à esquerda no próprio root
+ * 
+ * @param treeRoot Referência para a raíz da árvore
+ * @param root Ponteiro para o nó onde a rotação será aplicada
+ */
+void rotate_right_left(Node*& treeRoot, Node* root);
+
+/**
+ * @brief Realiza uma busca por uma palavra na árvore binária de busca
+ *
+ * @param tree Ponteiro para a árvore onde será feita a busca
+ * @param word Palavra a ser procurada
+ * @return Estrutura SearchResult indicando se a palavra foi encontrada e os IDs associados
  */
 SearchResult search(BinaryTree* tree, const std::string& word);
 
 /**
  * @brief Libera a memória alocada para um nó específico
  * 
- * Após a chamada desta função, o ponteiro do nó não deve mais ser utilizado.
+ * Após a chamada desta função, o ponteiro do nó não deve mais ser utilizado
  *
- * @param node Ponteiro para o nó a ser destruído.
+ * @param node Ponteiro para o nó a ser destruído
  */
 void destroyNode(Node* node);
 
 /**
- * @brief Libera toda a memória alocada pela árvore binária de busca.
+ * @brief Libera toda a memória alocada pela árvore binária de busca
  *
- * Após a chamada desta função, o ponteiro da árvore não deve mais ser utilizado.
+ * Após a chamada desta função, o ponteiro da árvore não deve mais ser utilizado
  *
  * @param tree Ponteiro para a árvore a ser destruída.
  */
