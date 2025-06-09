@@ -65,6 +65,17 @@ struct SearchResult {
  */
 BinaryTree* create();
 
+// TODO: implementar funções de rotação
+void transplant(Node* root, Node* node);
+
+Node* rotate_right(BinaryTree* tree, Node* node);
+
+Node* rotate_left(BinaryTree* tree, Node* node);
+
+Node* rotate_left_right(BinaryTree* tree, Node* node);
+
+Node* rotate_right_left(BinaryTree* tree, Node* node);
+
 /**
  * @brief Realiza uma busca por uma palavra na árvore binária de busca.
  *
