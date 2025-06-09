@@ -1,9 +1,64 @@
 #include "tree_utils.h"
 #include <iostream>
 #include <algorithm>
+#include <chrono>
 #include <string>
 
 using namespace std;
+using namespace chrono;
+
+BinaryTree* create() {
+    BinaryTree* tree = new BinaryTree;
+    tree->root = nullptr;
+    tree->NIL = nullptr;
+    return tree;
+}
+
+SearchResult search(BinaryTree* tree, const std::string& word) {
+    SearchResult result = {0, {}, 0.0, 0};
+    
+    // Verifica a existência da árvore
+    if (tree->root == nullptr) {
+        return result;
+    };
+
+    // Começa o cronômetro
+    auto start = system_clock::now();
+    Node* current = tree->root;
+
+    // Loop de comparação
+    do {
+        result.numComparisons ++;
+        if (current->word == word) {
+            result.found = 1;
+            result.documentIds = current->documentIds;
+            break;
+        } else if (current->word < word) {
+            current = current->right;
+        } else {
+            current = current->left;
+        }
+    }while (current != nullptr);
+
+    // Para o relógio
+    auto stop = system_clock::now();
+    result.executionTime = duration<double>(stop - start).count();
+    return result;    
+};
+    
+void destroyNode(Node* node) {
+    // Caso o nó não seja nulo, o nó e seus filhos são destruídos
+    if (node != nullptr) {
+        destroyNode(node->left);
+        destroyNode(node->right);
+        delete node;
+    }
+}
+
+void destroy(BinaryTree* tree) {
+    destroyNode(tree->root);
+    delete tree;
+};
 
 void printIndexRecursive(Node* node) {
     if (node == nullptr){
