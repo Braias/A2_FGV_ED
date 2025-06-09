@@ -111,3 +111,54 @@ void printTreeRecursive(Node* node, string prefix, bool left) {
 void printTree(BinaryTree* tree) {
     printTreeRecursive(tree->root, "", false);
 }
+
+void transplant(Node* u, Node* v) {
+    // Não faz sentido substituir a raíz de uma árvore por outra
+    if(u->parent == nullptr) {
+        return;
+    } else if(u == u->parent->left) {
+        u->parent->left = v;
+    } else {
+        u->parent->right = v;
+    }
+
+    if(v != nullptr) {
+        v->parent = u->parent;
+    }
+}
+
+int get_height(Node* node){
+    if(node == nullptr){
+        return 0;
+    };
+    return node->height;
+};
+
+void new_height(Node* node){
+    // Depois da rotação, atualiza a altura
+    node->height = 1 + max(get_height(node->left), get_height(node->right));
+};
+
+void rotateLeft(Node* root) {
+    Node* newRoot = root->right;
+
+    transplant(newRoot, newRoot->left);
+    transplant(root, newRoot);
+    newRoot->left = root;
+    root->parent = newRoot;
+
+    new_height(root);      // atualiza o nó que foi para baixo
+    new_height(newRoot);  // atualiza a nova raiz da subárvore
+}
+
+void rotateRight(Node* root) {
+    Node* newRoot = root->left;
+
+    transplant(newRoot, newRoot->right);
+    transplant(root, newRoot);
+    newRoot->right = root;
+    root->parent = newRoot;
+
+    new_height(root);      // atualiza o nó que foi para baixo
+    new_height(newRoot);  // atualiza a nova raiz da subárvore
+}
