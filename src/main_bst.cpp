@@ -3,6 +3,7 @@
 #include <vector>
 #include "bst.h"
 #include "data.h"
+#include "tree_utils.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ vector<string> collect_file_paths(string path, int limit) {
 
 BinaryTree* construct_bst(vector<string> file_paths) {  
     int doc_id = 0;
-    BinaryTree* bst = BST::create();
+    BinaryTree* bst = create();
 
     for (size_t path_index = 0; path_index < file_paths.size(); path_index++) { // Itera sobre cada documento do diretorio
 
@@ -44,7 +45,7 @@ void perform_search(BinaryTree* bst) {
     cin >> search_word;
 
     // rodar busca em bst
-    SearchResult sr = BST::search(bst, search_word); 
+    SearchResult sr = search(bst, search_word); 
 
     // compilar resumo do search
     if (sr.found) {

@@ -59,6 +59,40 @@ struct SearchResult {
 };
 
 /**
+ * @brief Cria e inicializa uma nova árvore binária de busca.
+ *
+ * @return Ponteiro para a estrutura BinaryTree recém-criada.
+ */
+BinaryTree* create();
+
+/**
+ * @brief Realiza uma busca por uma palavra na árvore binária de busca.
+ *
+ * @param tree Ponteiro para a árvore onde será feita a busca.
+ * @param word Palavra a ser procurada.
+ * @return Estrutura SearchResult indicando se a palavra foi encontrada e os IDs associados.
+ */
+SearchResult search(BinaryTree* tree, const std::string& word);
+
+/**
+ * @brief Libera a memória alocada para um nó específico
+ * 
+ * Após a chamada desta função, o ponteiro do nó não deve mais ser utilizado.
+ *
+ * @param node Ponteiro para o nó a ser destruído.
+ */
+void destroyNode(Node* node);
+
+/**
+ * @brief Libera toda a memória alocada pela árvore binária de busca.
+ *
+ * Após a chamada desta função, o ponteiro da árvore não deve mais ser utilizado.
+ *
+ * @param tree Ponteiro para a árvore a ser destruída.
+ */
+void destroy(BinaryTree* tree);
+
+/**
  * @brief Função que printa o index recursivamente, usado por printIndex
  * @param node Nó que será printado
  */
