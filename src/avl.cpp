@@ -22,5 +22,6 @@ namespace AVL {
 
     int get_balance(Node* node){
         int balance = node->right->height - node->left->height;
+        return balance;
     };
 }
