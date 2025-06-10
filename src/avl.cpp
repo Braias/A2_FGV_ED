@@ -23,7 +23,7 @@ namespace AVL {
     int get_balance(Node* node){
         if (node == nullptr) return 0;
         else {
-            int balance = node->right->height - node->left->height;
+            int balance = get_height(node->right) - get_height(node->left);
             return balance;
         }
     };
