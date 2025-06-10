@@ -35,7 +35,14 @@ namespace BST {
 
                 if (word == current->word) {
                     // Palavra já existe: apenas adiciona o documento
-                    if(find(current->documentIds.begin(), current->documentIds.end(), documentId) == current->documentIds.end()){
+                    bool found = false;
+                    for (const auto& id : current->documentIds) {
+                        if (id == documentId) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
                         current->documentIds.push_back(documentId);
                     }
                     delete newNode;  // Libera o nó não utilizado
