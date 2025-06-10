@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
                 return 0;  
             }
             
-            // construit bst baseado em parametros da recebidos pela CLI
+            // construir bst baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             bst = construct_bst(doc_paths);
 
