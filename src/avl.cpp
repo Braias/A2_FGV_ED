@@ -26,13 +26,16 @@ namespace AVL {
     };
 
     Node* insert_recursive(Node*& treeRoot, Node* root, const std::string& word, int docId, int& numComparisons){
+
+        // Verifica se a root é vazio
         if(root == nullptr) {
             Node* newNode = new Node{word, {docId}, nullptr, nullptr, nullptr, 1, 0};
             return newNode;
         }
 
+        // Aumenta o número de comparações
         numComparisons++;
-
+        
         if (word < root->word){
             root -> left = insert_recursive(treeRoot, root->left, word, docId, numComparisons);
             if (root -> left) root->left->parent = root;
@@ -76,4 +79,23 @@ namespace AVL {
         return root;
         }
     }
+
+    InsertResult insert(BinaryTree* tree, const std::string& word, int docId) {
+        InsertResult result;
+        // Começa o cronômetro
+        auto start = chrono::high_resolution_clock::now();
+        
+        // Inicializa o número de comparações
+        int numComparisons = 0;
+
+        // Insere o nó
+        tree->root = insert_recursive(tree->root, tree->root, word, docId, numComparisons); 
+
+        // Para o cronômetro
+        auto end = chrono::high_resolution_clock::now();
+        result.executionTime = chrono::duration<double, milli>(end - start).count();
+        result.numComparisons = numComparisons;
+        return result;
+    }
+
 }
