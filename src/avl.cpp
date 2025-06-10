@@ -21,8 +21,11 @@ namespace AVL {
     };
 
     int get_balance(Node* node){
-        int balance = node->right->height - node->left->height;
-        return balance;
+        if (node == nullptr) return 0;
+        else {
+            int balance = node->right->height - node->left->height;
+            return balance;
+        }
     };
 
     Node* insert_recursive(Node*& treeRoot, Node* root, const std::string& word, int docId, int& numComparisons){
@@ -89,7 +92,7 @@ namespace AVL {
         int numComparisons = 0;
 
         // Insere o nó
-        tree->root = insert_recursive(tree->root, tree->root, word, docId, numComparisons); 
+        tree->root = AVL::insert_recursive(tree->root, tree->root, word, docId, numComparisons);
 
         // Para o cronômetro
         auto end = chrono::high_resolution_clock::now();
