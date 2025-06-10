@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
 #include "avl.h"
 #include "data.h"
 #include "tree_utils.h"
@@ -17,25 +18,39 @@ vector<string> collect_file_paths(string path, int limit) {
     return file_paths; 
 }
 
-BinaryTree* construct_avl(vector<string> file_paths) {  
-    int doc_id = 0;
+ConstructResult construct_avl(vector<string> file_paths) {  
+    ConstructResult result;
     BinaryTree* avl = create();
+    int doc_id = 0;
+    double totalTime = 0.0;
+    int totalComparisons = 0;
 
     for (size_t path_index = 0; path_index < file_paths.size(); path_index++) { // Itera sobre cada documento do diretorio
 
         string file_content = DataHandling::load_doc(file_paths.at(path_index)); // extrai seu conteudo
-
+        double time = 0.0;
+        int comparisons = 0;
         DataHandling::Document doc = DataHandling::read_doc(file_paths.at(path_index), doc_id, file_content); // segementa strings unicos
         vector<DataHandling::WordAppearance> word_appearances = DataHandling::process_doc(doc); // compila strongs unicos em wordAppearnces
 
         for (size_t appearance_index = 0; appearance_index < word_appearances.size(); appearance_index++) { // itera sobre cada appearnce
             DataHandling::WordAppearance new_node = word_appearances.at(appearance_index);
-            insert(avl, new_node.word, new_node.document_id); // inseri word appearnce como no na AVL
-        }
-
+            InsertResult inserts = insert(avl, new_node.word, new_node.document_id); // inseri word appearnce como no na AVL
+            time += inserts.executionTime;
+            comparisons += inserts.numComparisons;
+        };
+        
+        totalComparisons += comparisons;
+        totalTime += time;
         doc_id++; // incrementa doc_id para apos completar processamento
     }
-    return avl; // retornar arovre preenchida
+
+    result.totalComparisons = totalComparisons;
+    result.comparisonsAVG = totalComparisons / file_paths.size();
+    result.totalInsertionTime = totalTime;
+    result.insertionTimeAVG = totalTime / file_paths.size();
+    result.tree = avl;
+    return result; // retornar arovre preenchida
 }
 
 void perform_search(BinaryTree* avl) {
@@ -60,7 +75,7 @@ void perform_search(BinaryTree* avl) {
         cout << "A palavra '" << search_word << "' nao foi encontrada." << endl;
     }
 
-    cout << "# de comapracoes: " << sr.numComparisons << endl;
+    cout << "# de comparacoes: " << sr.numComparisons << endl;
     cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
 }
 
@@ -84,18 +99,42 @@ int main(int argc, char* argv[]) {
             cout << "----------PROCURANDO DOCUMENTOS----------\n";
 
             if(n_docs <= 0 ){
-                cout << n_docs << " - numero de documnentos invalido";
+                cout << n_docs << " - numero de documentos invalidos";
                 return 0;  
             }
             
             // construir bst baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
-            avl = construct_avl(doc_paths);
+            avl = construct_avl(doc_paths).tree;
 
-            cout << "Arvore contruida com sucesso\n";
+            cout << "Arvore construida com sucesso\n";
             cout <<"# documentos: " << n_docs << " caminho: "<< directory_path << "\n";
             // Executar busca
             perform_search(avl);
+        }
+
+        if (mode == "stats"){
+            cout << "----------ESTATISTICAS----------\n";
+
+            if(n_docs <= 0 ){
+                cout << n_docs << " - numero de documentos invalidos";
+                return 0;  
+            }
+
+            // construir AVL baseado em parametros da recebidos pela CLI
+            vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
+            ConstructResult cr = construct_avl(doc_paths);
+            BinaryTree* tree = cr.tree;
+            double avgTime = cr.insertionTimeAVG;
+            double avgComp = cr.comparisonsAVG;
+            double totalTime = cr.totalInsertionTime;
+            int totalComp = cr.totalComparisons;
+
+            cout << "Tempo medio de insercao: " << avgTime << "\n";
+            cout << "Tempo total de insercao: " << totalTime << "\n";
+            cout << "Numero medio de comparacoes: " << avgComp << "\n";
+            cout << "Numero total de comparacoes: " << totalComp << "\n";
+
         }
     }
 }

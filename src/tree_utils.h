@@ -59,6 +59,19 @@ struct SearchResult {
 };
 
 /**
+ * @brief Estrutura usada para retornar estatisticas de insercoes em uma arvore
+ * guarda a arvore e os valores totais e medios do tempo de insercoes por documento
+ * e numero de comparacoes por documento
+ */
+struct ConstructResult {
+    BinaryTree* tree;
+    double totalInsertionTime;
+    double insertionTimeAVG;
+    int totalComparisons;
+    double comparisonsAVG;
+};
+
+/**
  * @brief Cria e inicializa uma nova árvore binária de busca
  *
  * @return Ponteiro para a estrutura BinaryTree recém-criada
