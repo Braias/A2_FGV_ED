@@ -20,7 +20,7 @@ namespace AVL {
         node->height = 1 + max(get_height(node->left), get_height(node->right));
     };
 
-    int get_balance(Node* Node){
-        return 0;
+    int get_balance(Node* node){
+        int balance = node->right->height - node->left->height;
     };
 }
