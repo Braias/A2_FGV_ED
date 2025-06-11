@@ -59,6 +59,19 @@ struct SearchResult {
 };
 
 /**
+ * @brief Estrutura usada para retornar estatisticas de insercoes em uma arvore
+ * guarda a arvore e os valores totais e medios do tempo de insercoes por documento
+ * e numero de comparacoes por documento
+ */
+struct ConstructResult {
+    BinaryTree* tree;
+    double totalInsertionTime;
+    double insertionTimeAVG;
+    int totalComparisons;
+    double comparisonsAVG;
+};
+
+/**
  * @brief Cria e inicializa uma nova árvore binária de busca
  *
  * @return Ponteiro para a estrutura BinaryTree recém-criada
@@ -81,18 +94,16 @@ void transplant(Node*& treeRoot, Node* u, Node* v);
  * 
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
- * @return nó 
  */
-Node* rotate_left(Node*& treeRoot, Node* root);
+void rotate_left(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação simples à direita na subárvore com raíz root
  * 
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
- * @return nó
  */
-Node* rotate_right(Node*& treeRoot, Node* root);
+void rotate_right(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação dupla esquerda-direita
@@ -102,10 +113,8 @@ Node* rotate_right(Node*& treeRoot, Node* root);
  * 
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
- * 
- * @return Nó
  */
-Node* rotate_left_right(Node*& treeRoot, Node* root);
+void rotate_left_right(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação dupla direita-esquerda
@@ -115,10 +124,8 @@ Node* rotate_left_right(Node*& treeRoot, Node* root);
  * 
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
- * 
- * @return nó
  */
-Node* rotate_right_left(Node*& treeRoot, Node* root);
+void rotate_right_left(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma busca por uma palavra na árvore binária de busca
@@ -136,7 +143,7 @@ SearchResult search(BinaryTree* tree, const std::string& word);
  *
  * @param node Ponteiro para o nó a ser destruído
  */
-void destroyNode(Node* node);
+void destroy_node(Node* node);
 
 /**
  * @brief Libera toda a memória alocada pela árvore binária de busca
@@ -151,14 +158,14 @@ void destroy(BinaryTree* tree);
  * @brief Função que printa o index recursivamente, usado por printIndex
  * @param node Nó que será printado
  */
-void printIndexRecursive(Node* node);
+void print_index_recursive(Node* node);
 
 /**
  * @brief Função que recebe uma árvore e mostra no console as palavras da árvore seguindo a ordem root->esquerda->direita
  * e o id dos documentos em que cada palavra aparece
  * @param tree ponteiro para a raíz da árvore
  */
-void printIndex(BinaryTree* tree);
+void print_index(BinaryTree* tree);
 
 /**
  * @brief Função que printa a estrutura da árvore recursivamente, usado por printTree
@@ -166,12 +173,26 @@ void printIndex(BinaryTree* tree);
  * @param prefix Usado para desenhar a estrutura da árvore
  * @param left Indica se o desenho é de um nó a esquerda ou direita
  */
-void printTreeRecursive(Node* node, std::string prefix, bool left);
+void print_tree_recursive(Node* node, std::string prefix, bool left);
 
 /**
  * @brief Função que recebe uma árvore e mostra no console a estrutura hierárquica da árvore
  * @param tree ponteiro para a raíz da árvore
  */
-void printTree(BinaryTree* tree);
+void print_tree(BinaryTree* tree);
+
+/**
+ * @brief Calcula a altura da árvore.
+ * @param tree Arvore a ser medida.
+ * @return A altura da árvore. Retorna -1 para uma árvore vazia.
+ */
+int get_tree_height(const BinaryTree* tree);
+
+/**
+ * @brief Encontra o comprimento do caminho mais curto da raiz até um nó folha.
+ * @param tree A árvore a ser medida.
+ * @return O comprimento do caminho mais curto. Retorna -1 para uma árvore vazia.
+ */
+int get_shortest_path(const BinaryTree* tree);
 
 #endif

@@ -46,28 +46,28 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
     return result;    
 };
     
-void destroyNode(Node* node) {
+void destroy_node(Node* node) {
     // Caso o nó não seja nulo, o nó e seus filhos são destruídos
     if (node != nullptr) {
-        destroyNode(node->left);
-        destroyNode(node->right);
+        destroy_node(node->left);
+        destroy_node(node->right);
         delete node;
     }
 }
 
 void destroy(BinaryTree* tree) {
-    destroyNode(tree->root);
+    destroy_node(tree->root);
     delete tree;
 };
 
-void printIndexRecursive(Node* node) {
+void print_index_recursive(Node* node) {
     if (node == nullptr){
         // Caso base: se o nó for nulo, encerra a recursão
 	    return;
     };
 
     // Percorre primeiro a subárvore da esquerda (ordem simétrica)
-    printIndexRecursive(node->left);
+    print_index_recursive(node->left);
 
     // Imprime a palavra armazenada no nó
     cout << node->word << ": ";
@@ -80,15 +80,15 @@ void printIndexRecursive(Node* node) {
     cout << endl;
 
     // Percorre a subárvore da direita
-    printIndexRecursive(node->right);
+    print_index_recursive(node->right);
 }
 
-void printIndex(BinaryTree* tree) {
-    printIndexRecursive(tree->root);
+void print_index(BinaryTree* tree) {
+    print_index_recursive(tree->root);
 }
 
 
-void printTreeRecursive(Node* node, string prefix, bool left) {
+void print_tree_recursive(Node* node, string prefix, bool left) {
     if (node == nullptr) {
         return;
     };
@@ -103,13 +103,13 @@ void printTreeRecursive(Node* node, string prefix, bool left) {
     cout << node->word << endl;
 
     // Recorre o filho a esquerda
-    printTreeRecursive(node->left, prefix + (left ? "|   " : "    "), true);
+    print_tree_recursive(node->left, prefix + (left ? "|   " : "    "), true);
     // Recorre o filho a direita
-    printTreeRecursive(node->right, prefix + (left ? "|   " : "    "), false);
+    print_tree_recursive(node->right, prefix + (left ? "|   " : "    "), false);
 }
 
-void printTree(BinaryTree* tree) {
-    printTreeRecursive(tree->root, "", false);
+void print_tree(BinaryTree* tree) {
+    print_tree_recursive(tree->root, "", false);
 }
 
 int get_height(Node* node){
@@ -139,9 +139,9 @@ void transplant(Node*& treeRoot, Node* u, Node* v) {
     }
 }
 
-Node* rotate_left(Node*& treeRoot, Node* root) {
+void rotate_left(Node*& treeRoot, Node* root) {
     Node* newRoot = root->right;
-    if (newRoot == nullptr) return root;
+    if (newRoot == nullptr) return;
 
     root->right = newRoot->left;
     if (newRoot->left != nullptr) {
@@ -155,12 +155,11 @@ Node* rotate_left(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
-    return newRoot;
 }
 
-Node* rotate_right(Node*& treeRoot, Node* root) {
+void rotate_right(Node*& treeRoot, Node* root) {
     Node* newRoot = root->left;
-    if (newRoot == nullptr) return root;
+    if (newRoot == nullptr) return;
 
     root->left = newRoot->right;
     if (newRoot->right != nullptr) {
@@ -174,15 +173,51 @@ Node* rotate_right(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
-    return newRoot;
 }
 
-Node* rotate_left_right(Node*& treeRoot, Node* root) {
-    root->left = rotate_left(treeRoot, root->left);
-    return rotate_right(treeRoot, root);
+void rotate_left_right(Node*& treeRoot, Node* root) {
+    rotate_left(treeRoot, root->left);
+    rotate_right(treeRoot, root);
 }
 
-Node* rotate_right_left(Node*& treeRoot, Node* root) {
-    root->right = rotate_right(treeRoot, root->right);
-    return rotate_left(treeRoot, root);
+void rotate_right_left(Node*& treeRoot, Node* root) {
+    rotate_right(treeRoot, root->right);
+    rotate_left(treeRoot, root);
+}
+
+int get_tree_height(const BinaryTree* tree) {
+    if (tree == nullptr || tree->root == nullptr) {
+        return -1;
+    }
+    return tree->root->height - 1;
+}
+
+int find_min_depth(const Node* node) {
+    if (node == nullptr) {
+        return -1;
+    }
+
+    if (node->left == nullptr && node->right == nullptr) {
+        return 0;
+    }
+
+    if (node->left == nullptr) {
+        return 1 + find_min_depth(node->right);
+    }
+    if (node->right == nullptr) {
+        return 1 + find_min_depth(node->left);
+    }
+
+    int left_depth = find_min_depth(node->left);
+    int right_depth = find_min_depth(node->right);
+
+    int min_child_depth = (left_depth < right_depth) ? left_depth : right_depth;
+    return 1 + min_child_depth;
+}
+
+int get_shortest_path(const BinaryTree* tree) {
+    if (tree == nullptr || tree->root == nullptr) {
+        return -1;
+    }
+    return find_min_depth(tree->root);
 }
