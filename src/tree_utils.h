@@ -69,7 +69,7 @@ struct ConstructResult {
     double insertionTimeAVG;
     int totalComparisons;
     double comparisonsAVG;
-    vector<string> unique_words;
+    std::vector<std::string> unique_words;
 };
 
 /**
