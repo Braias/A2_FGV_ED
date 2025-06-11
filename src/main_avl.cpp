@@ -18,23 +18,6 @@ vector<string> collect_file_paths(string path, int limit) {
     return file_paths; 
 }
 
-double *get_search_stats(BinaryTree* avl, vector<string> unique_words){
-    int word_count = unique_words.size();
-    double max_time = 0;
-    double total_time = 0;
-    int total_comparissons = 0;
-    for(const auto& word : unique_words){
-        SearchResult search_result = perform_search(avl,word);
-        total_time += search_result.executionTime;
-        total_comparissons += search_result.numComparisons;
-        if(search_result.executionTime > max_time){
-            max_time = search_result.executionTime;
-        }
-    }
-    double search_stats[4] = {total_time/word_count, max_time, total_comparissons/word_count, total_comparissons}; 
-    return search_stats;
-}
-
 ConstructResult construct_avl(vector<string> file_paths) {  
     ConstructResult result;
     BinaryTree* avl = create();
@@ -49,14 +32,14 @@ ConstructResult construct_avl(vector<string> file_paths) {
         int comparisons = 0;
         DataHandling::Document doc = DataHandling::read_doc(file_paths.at(path_index), doc_id, file_content); // segementa strings unicos
         vector<DataHandling::WordAppearance> word_appearances = DataHandling::process_doc(doc); // compila strongs unicos em wordAppearnces
-
+        
         for (size_t appearance_index = 0; appearance_index < word_appearances.size(); appearance_index++) { // itera sobre cada appearnce
             DataHandling::WordAppearance new_node = word_appearances.at(appearance_index);
             InsertResult inserts = insert(avl, new_node.word, new_node.document_id); // inseri word appearnce como no na AVL
             time += inserts.executionTime;
             comparisons += inserts.numComparisons;
             bool found = false;
-
+            
             for (const auto& name : result.unique_words) {
                 if (name == new_node.word) {
                     found = true;
@@ -72,7 +55,7 @@ ConstructResult construct_avl(vector<string> file_paths) {
         totalTime += time;
         doc_id++; // incrementa doc_id para apos completar processamento
     }
-
+    
     result.totalComparisons = totalComparisons;
     result.comparisonsAVG = totalComparisons / file_paths.size();
     result.totalInsertionTime = totalTime;
@@ -87,10 +70,10 @@ SearchResult perform_search(BinaryTree* avl, string search_word = "") {
         cout << "Insira a palavra que voce procura: ";
         cin >> search_word;
     }
-
+    
     // rodar busca em avl
     SearchResult sr = search(avl, search_word); 
-
+    
     // compilar resumo do search
     if (sr.found) {
         cout << "A palavra '" << search_word << "' foi encontrada nos seguintes docuemntos: " << endl;
@@ -98,11 +81,11 @@ SearchResult perform_search(BinaryTree* avl, string search_word = "") {
             cout << id << " ";
         }  
         cout << endl;
-
+        
     } else {
         cout << "A palavra '" << search_word << "' nao foi encontrada." << endl;
     }
-
+    
     cout << "# de comparacoes: " << sr.numComparisons << endl;
     cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
 
@@ -110,20 +93,49 @@ SearchResult perform_search(BinaryTree* avl, string search_word = "") {
 }
 
 
-int main(int argc, char* argv[]) {
+#include <array>
 
+std::array<double, 4> get_search_stats(BinaryTree* avl, const vector<string>& unique_words) {
+    if (unique_words.empty()) {
+        return {0.0, 0.0, 0.0, 0.0};
+    }
+
+    size_t word_count = unique_words.size();
+    double max_time = 0.0;
+    double total_time = 0.0;
+    double total_comparisons = 0.0;
+    double max_comparisons = 0.0;
+
+    for (const auto& word : unique_words) {
+        SearchResult search_result = search(avl, word);
+        total_time += search_result.executionTime;
+        total_comparisons += search_result.numComparisons;
+        
+        if (search_result.executionTime > max_time) {
+            max_time = search_result.executionTime;
+        }
+        if (search_result.numComparisons > max_comparisons) {
+            max_comparisons = search_result.numComparisons;
+        }
+    }
+
+    return {total_time / word_count,max_time,total_comparisons / word_count,max_comparisons};
+}
+
+int main(int argc, char* argv[]) {
+    
     if(argc != 4){ // verificar contagem certa de instrucoes 
         cout << "Numero insuficiente de Argumentos!";
         return 0;
     }
-
+    
     else{
-
+        
         string mode = argv[1];
         int n_docs = stoi(argv[2]); // transformacao de string para int
         string directory_path = argv[3];
         BinaryTree* avl;
-
+        
         // execucao de search mode
         if(mode == "search"){
             cout << "----------PROCURANDO DOCUMENTOS----------\n";
@@ -136,7 +148,7 @@ int main(int argc, char* argv[]) {
             // construir bst baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             avl = construct_avl(doc_paths).tree;
-
+            
             cout << "Arvore construida com sucesso\n";
             cout <<"# documentos: " << n_docs << " caminho: "<< directory_path << "\n";
             // Executar busca
@@ -145,41 +157,41 @@ int main(int argc, char* argv[]) {
 
         if (mode == "stats"){
             cout << "----------ESTATISTICAS----------\n";
-
+            
             if(n_docs <= 0 ){
                 cout << n_docs << " - numero de documentos invalidos";
                 return 0;
             }
 
             cout << "----------Inserção----------\n";
-
+            
             // construir AVL baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             ConstructResult cr = construct_avl(doc_paths);
             BinaryTree* tree = cr.tree;
-
+            
             double avgTime = cr.insertionTimeAVG;
             double avgComp = cr.comparisonsAVG;
             double totalTime = cr.totalInsertionTime;
             int totalComp = cr.totalComparisons;
-
+            
             cout << "Tempo medio: " << avgTime << "\n";
             cout << "Tempo total: " << totalTime << "\n";
             cout << "Numero medio de comparacoes: " << avgComp << "\n";
             cout << "Numero total de comparacoes: " << totalComp << "\n";
-
+            
             cout << "----------Busca----------\n";
             cout << "----------Estrutura----------\n";
-
+            
             int treeHeight = get_tree_height(tree);
             int shortestPath = get_shortest_path(tree);
             int longestPath = treeHeight;
-
+            
             cout << "Altura da arvore: " << treeHeight << "\n";
             cout << "Tamanho do menor galho (caminho mais curto): " << shortestPath << "\n";
             cout << "Tamanho do maior galho (caminho mais longo): " << longestPath << "\n";
-
-
+            
+            
         }
     }
 }
