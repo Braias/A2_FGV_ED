@@ -18,6 +18,8 @@ vector<string> collect_file_paths(string path, int limit) {
     return file_paths; 
 }
 
+
+
 ConstructResult construct_avl(vector<string> file_paths) {  
     ConstructResult result;
     BinaryTree* avl = create();
@@ -118,22 +120,37 @@ int main(int argc, char* argv[]) {
 
             if(n_docs <= 0 ){
                 cout << n_docs << " - numero de documentos invalidos";
-                return 0;  
+                return 0;
             }
+
+            cout << "----------Inserção----------\n";
 
             // construir AVL baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             ConstructResult cr = construct_avl(doc_paths);
             BinaryTree* tree = cr.tree;
+
             double avgTime = cr.insertionTimeAVG;
             double avgComp = cr.comparisonsAVG;
             double totalTime = cr.totalInsertionTime;
             int totalComp = cr.totalComparisons;
 
-            cout << "Tempo medio de insercao: " << avgTime << "\n";
-            cout << "Tempo total de insercao: " << totalTime << "\n";
+            cout << "Tempo medio: " << avgTime << "\n";
+            cout << "Tempo total: " << totalTime << "\n";
             cout << "Numero medio de comparacoes: " << avgComp << "\n";
             cout << "Numero total de comparacoes: " << totalComp << "\n";
+
+            cout << "----------Busca----------\n";
+            cout << "----------Estrutura----------\n";
+
+            int treeHeight = get_tree_height(tree);
+            int shortestPath = get_shortest_path(tree);
+            int longestPath = treeHeight;
+
+            cout << "Altura da arvore: " << treeHeight << "\n";
+            cout << "Tamanho do menor galho (caminho mais curto): " << shortestPath << "\n";
+            cout << "Tamanho do maior galho (caminho mais longo): " << longestPath << "\n";
+
 
         }
     }
