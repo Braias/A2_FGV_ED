@@ -66,29 +66,32 @@ ConstructResult construct_avl(vector<string> file_paths) {
 
 SearchResult perform_search(BinaryTree* avl, string search_word = "") {
     // toma input do usuario
+    bool default_passed = true;
     if(search_word == ""){
         cout << "Insira a palavra que voce procura: ";
         cin >> search_word;
+        default_passed = false;
     }
     
     // rodar busca em avl
     SearchResult sr = search(avl, search_word); 
     
     // compilar resumo do search
-    if (sr.found) {
-        cout << "A palavra '" << search_word << "' foi encontrada nos seguintes docuemntos: " << endl;
-        for(int id : sr.documentIds){
-            cout << id << " ";
-        }  
-        cout << endl;
+    if(!default_passed){
+        if (sr.found ) {
+            cout << "A palavra '" << search_word << "' foi encontrada nos seguintes docuemntos: " << endl;
+            for(int id : sr.documentIds){
+                cout << id << " ";
+            }  
+            cout << endl;
+            
+        } else {
+            cout << "A palavra '" << search_word << "' nao foi encontrada." << endl;
+        }
         
-    } else {
-        cout << "A palavra '" << search_word << "' nao foi encontrada." << endl;
+        cout << "# de comparacoes: " << sr.numComparisons << endl;
+        cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
     }
-    
-    cout << "# de comparacoes: " << sr.numComparisons << endl;
-    cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
-
     return sr;
 }
 
@@ -99,7 +102,8 @@ vector<double> get_search_stats(BinaryTree* avl, const vector<string>& unique_wo
         return {0.0, 0.0, 0.0, 0.0};
     }
 
-    size_t word_count = unique_words.size();
+    double word_count = unique_words.size();
+
     double max_time = 0.0;
     double total_time = 0.0;
     double total_comparisons = 0.0;
@@ -176,6 +180,13 @@ int main(int argc, char* argv[]) {
             cout << "Numero total de comparacoes: " << totalComp << "\n";
             
             cout << "----------Busca----------\n";
+            vector<double> search_stats = get_search_stats(tree,cr.unique_words);
+            cout << "Tempo medio: " << search_stats.at(0) << "\n";
+            cout << "Tempo Maximo: " << search_stats.at(1) << "\n";
+            cout << "Numero medio de comparacoes: " << search_stats.at(2) << "\n";
+            cout << "Numero total de comparacoes: " << search_stats.at(3) << "\n";
+
+
             cout << "----------Estrutura----------\n";
             
             int treeHeight = get_tree_height(tree);
