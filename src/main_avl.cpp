@@ -40,6 +40,17 @@ ConstructResult construct_avl(vector<string> file_paths) {
             InsertResult inserts = insert(avl, new_node.word, new_node.document_id); // inseri word appearnce como no na AVL
             time += inserts.executionTime;
             comparisons += inserts.numComparisons;
+            bool found = false;
+            
+            for (const auto& name : result.unique_words) {
+                if (name == new_node.word) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.unique_words.push_back(new_node.word);
+            }
         };
         
         totalComparisons += comparisons;
