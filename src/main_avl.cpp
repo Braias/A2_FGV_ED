@@ -93,9 +93,8 @@ SearchResult perform_search(BinaryTree* avl, string search_word = "") {
 }
 
 
-#include <array>
 
-std::array<double, 4> get_search_stats(BinaryTree* avl, const vector<string>& unique_words) {
+vector<double> get_search_stats(BinaryTree* avl, const vector<string>& unique_words) {
     if (unique_words.empty()) {
         return {0.0, 0.0, 0.0, 0.0};
     }
@@ -104,22 +103,18 @@ std::array<double, 4> get_search_stats(BinaryTree* avl, const vector<string>& un
     double max_time = 0.0;
     double total_time = 0.0;
     double total_comparisons = 0.0;
-    double max_comparisons = 0.0;
 
     for (const auto& word : unique_words) {
-        SearchResult search_result = search(avl, word);
+        SearchResult search_result = perform_search(avl, word);
         total_time += search_result.executionTime;
         total_comparisons += search_result.numComparisons;
-        
+        // Atualizando tempo maximo de exec 
         if (search_result.executionTime > max_time) {
             max_time = search_result.executionTime;
         }
-        if (search_result.numComparisons > max_comparisons) {
-            max_comparisons = search_result.numComparisons;
-        }
     }
-
-    return {total_time / word_count,max_time,total_comparisons / word_count,max_comparisons};
+    //Retornando conjunto de estatiscas para busca
+    return {total_time / word_count,max_time,total_comparisons / word_count,total_comparisons};
 }
 
 int main(int argc, char* argv[]) {
