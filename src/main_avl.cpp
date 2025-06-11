@@ -18,7 +18,22 @@ vector<string> collect_file_paths(string path, int limit) {
     return file_paths; 
 }
 
-
+double *get_search_stats(BinaryTree* avl, vector<string> unique_words){
+    int word_count = unique_words.size();
+    double max_time = 0;
+    double total_time = 0;
+    int total_comparissons = 0;
+    for(const auto& word : unique_words){
+        SearchResult search_result = perform_search(avl,word);
+        total_time += search_result.executionTime;
+        total_comparissons += search_result.numComparisons;
+        if(search_result.executionTime > max_time){
+            max_time = search_result.executionTime;
+        }
+    }
+    double search_stats[4] = {total_time/word_count, max_time, total_comparissons/word_count, total_comparissons}; 
+    return search_stats;
+}
 
 ConstructResult construct_avl(vector<string> file_paths) {  
     ConstructResult result;
@@ -41,7 +56,7 @@ ConstructResult construct_avl(vector<string> file_paths) {
             time += inserts.executionTime;
             comparisons += inserts.numComparisons;
             bool found = false;
-            
+
             for (const auto& name : result.unique_words) {
                 if (name == new_node.word) {
                     found = true;
@@ -66,12 +81,12 @@ ConstructResult construct_avl(vector<string> file_paths) {
     return result; // retornar arovre preenchida
 }
 
-void perform_search(BinaryTree* avl) {
+SearchResult perform_search(BinaryTree* avl, string search_word = "") {
     // toma input do usuario
-    string search_word;
-
-    cout << "Insira a palavra que voce procura: ";
-    cin >> search_word;
+    if(search_word == ""){
+        cout << "Insira a palavra que voce procura: ";
+        cin >> search_word;
+    }
 
     // rodar busca em avl
     SearchResult sr = search(avl, search_word); 
@@ -90,6 +105,8 @@ void perform_search(BinaryTree* avl) {
 
     cout << "# de comparacoes: " << sr.numComparisons << endl;
     cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
+
+    return sr;
 }
 
 
