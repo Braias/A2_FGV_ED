@@ -181,4 +181,18 @@ void printTreeRecursive(Node* node, std::string prefix, bool left);
  */
 void printTree(BinaryTree* tree);
 
+/**
+ * @brief Calcula a altura da árvore.
+ * @param tree Arvore a ser medida.
+ * @return A altura da árvore. Retorna -1 para uma árvore vazia.
+ */
+int get_tree_height(const BinaryTree* tree);
+
+/**
+ * @brief Encontra o comprimento do caminho mais curto da raiz até um nó folha.
+ * @param tree A árvore a ser medida.
+ * @return O comprimento do caminho mais curto. Retorna -1 para uma árvore vazia.
+ */
+int get_shortest_path(const BinaryTree* tree);
+
 #endif
