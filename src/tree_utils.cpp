@@ -139,9 +139,9 @@ void transplant(Node*& treeRoot, Node* u, Node* v) {
     }
 }
 
-void rotate_left(Node*& treeRoot, Node* root) {
+Node* rotate_left(Node*& treeRoot, Node* root) {
     Node* newRoot = root->right;
-    if (newRoot == nullptr) return;
+    if (newRoot == nullptr) return root;
 
     root->right = newRoot->left;
     if (newRoot->left != nullptr) {
@@ -155,11 +155,12 @@ void rotate_left(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
+    return newRoot;
 }
 
-void rotate_right(Node*& treeRoot, Node* root) {
+Node* rotate_right(Node*& treeRoot, Node* root) {
     Node* newRoot = root->left;
-    if (newRoot == nullptr) return;
+    if (newRoot == nullptr) return root;
 
     root->left = newRoot->right;
     if (newRoot->right != nullptr) {
@@ -173,16 +174,17 @@ void rotate_right(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
+    return newRoot;
 }
 
-void rotate_left_right(Node*& treeRoot, Node* root) {
-    rotate_left(treeRoot, root->left);
-    rotate_right(treeRoot, root);
+Node* rotate_left_right(Node*& treeRoot, Node* root) {
+    root->left = rotate_left(treeRoot, root->left);
+    return rotate_right(treeRoot, root);
 }
 
-void rotate_right_left(Node*& treeRoot, Node* root) {
-    rotate_right(treeRoot, root->right);
-    rotate_left(treeRoot, root);
+Node* rotate_right_left(Node*& treeRoot, Node* root) {
+    root->right = rotate_right(treeRoot, root->right);
+    return rotate_left(treeRoot, root);
 }
 
 int get_tree_height(const BinaryTree* tree) {

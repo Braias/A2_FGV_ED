@@ -95,7 +95,7 @@ void transplant(Node*& treeRoot, Node* u, Node* v);
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
  */
-void rotate_left(Node*& treeRoot, Node* root);
+Node* rotate_left(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação simples à direita na subárvore com raíz root
@@ -103,7 +103,7 @@ void rotate_left(Node*& treeRoot, Node* root);
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
  */
-void rotate_right(Node*& treeRoot, Node* root);
+Node* rotate_right(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação dupla esquerda-direita
@@ -114,7 +114,7 @@ void rotate_right(Node*& treeRoot, Node* root);
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
  */
-void rotate_left_right(Node*& treeRoot, Node* root);
+Node* rotate_left_right(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma rotação dupla direita-esquerda
@@ -125,7 +125,7 @@ void rotate_left_right(Node*& treeRoot, Node* root);
  * @param treeRoot Referência para a raíz da árvore
  * @param root Ponteiro para o nó onde a rotação será aplicada
  */
-void rotate_right_left(Node*& treeRoot, Node* root);
+Node* rotate_right_left(Node*& treeRoot, Node* root);
 
 /**
  * @brief Realiza uma busca por uma palavra na árvore binária de busca
