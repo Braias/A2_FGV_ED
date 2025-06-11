@@ -184,3 +184,40 @@ void rotate_right_left(Node*& treeRoot, Node* root) {
     rotate_right(treeRoot, root->right);
     rotate_left(treeRoot, root);
 }
+
+int get_tree_height(const BinaryTree* tree) {
+    if (tree == nullptr || tree->root == nullptr) {
+        return -1;
+    }
+    return tree->root->height - 1;
+}
+
+int find_min_depth(const Node* node) {
+    if (node == nullptr) {
+        return -1;
+    }
+
+    if (node->left == nullptr && node->right == nullptr) {
+        return 0;
+    }
+
+    if (node->left == nullptr) {
+        return 1 + find_min_depth(node->right);
+    }
+    if (node->right == nullptr) {
+        return 1 + find_min_depth(node->left);
+    }
+
+    int left_depth = find_min_depth(node->left);
+    int right_depth = find_min_depth(node->right);
+
+    int min_child_depth = (left_depth < right_depth) ? left_depth : right_depth;
+    return 1 + min_child_depth;
+}
+
+int get_shortest_path(const BinaryTree* tree) {
+    if (tree == nullptr || tree->root == nullptr) {
+        return -1;
+    }
+    return find_min_depth(tree->root);
+}
