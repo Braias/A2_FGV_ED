@@ -42,15 +42,24 @@ namespace AVL {
         if (word < root->word){
             root -> left = insert_recursive(treeRoot, root->left, word, docId, numComparisons);
             if (root -> left) root->left->parent = root;
-        }  else if (word > root->word){
+        }  
+        else if (word > root->word){
             root->right = insert_recursive(treeRoot, root->right, word, docId, numComparisons);
-            if (root->right) root->right->parent = root;
-            else {
-                if (find(root->documentIds.begin(), root->documentIds.end(), docId) == root->documentIds.end()){
-                    root->documentIds.push_back(docId);
+            if (root->right) root->right->parent = root;}
+        else {
+            bool exists = false;
+            for (int id : root->documentIds) {
+                if (id == docId) {
+                    exists = true;
+                    break;
                 }
-                return root;
             }
+            if (!exists) {
+                root->documentIds.push_back(docId);
+            }
+            return root;
+        }
+
 
         // Atualiza a altura
         new_height(root);
@@ -80,7 +89,7 @@ namespace AVL {
         }
 
         return root;
-        }
+        
     }
 
     InsertResult insert(BinaryTree* tree, const std::string& word, int docId) {
