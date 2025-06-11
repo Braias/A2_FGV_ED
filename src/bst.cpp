@@ -64,6 +64,20 @@ namespace BST {
             }
         }
 
+        // Atualiza alturas de baixo pra cima
+        Node* node = newNode->parent;
+        while (node != nullptr) {
+            int leftHeight = node->left ? node->left->height : 0;
+            int rightHeight = node->right ? node->right->height : 0;
+            if (leftHeight > rightHeight) {
+                node->height = 1 + leftHeight;
+            } 
+            else {
+                node->height = 1 + rightHeight;
+            }
+            node = node->parent;
+        }
+
         // Para o cronômetro
         auto end = high_resolution_clock::now();
         result.executionTime = duration<double>(end - start).count();
