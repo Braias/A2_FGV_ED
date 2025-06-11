@@ -11,10 +11,6 @@ using namespace AVL;
 
 vector<string> collect_file_paths(string path, int limit) { 
     vector<string> file_paths = DataHandling::read_directory(path,limit); // vetor de caminhos para cada documento
-
-    if (file_paths.empty()) { // verificar e avisar se vetor estiver vazio
-        cout << "Nenhum arquivo adequado encontrado no diretorio." << endl;
-    }
     return file_paths; 
 }
 
@@ -40,6 +36,10 @@ ConstructResult construct_avl(vector<string> file_paths) {
             InsertResult inserts = insert(avl, new_node.word, new_node.document_id); // inseri word appearnce como no na AVL
             time += inserts.executionTime;
             comparisons += inserts.numComparisons;
+
+            if(find(result.unique_words.begin(),result.unique_words.end(), new_node.word) == result.unique_words.end()){
+                result.unique_words.push_back(new_node.word);
+            }
         };
         
         totalComparisons += comparisons;
@@ -55,7 +55,7 @@ ConstructResult construct_avl(vector<string> file_paths) {
     return result; // retornar arovre preenchida
 }
 
-void perform_search(BinaryTree* avl) {
+SearchResult perform_search(BinaryTree* avl) {
     // toma input do usuario
     string search_word;
 
@@ -79,6 +79,7 @@ void perform_search(BinaryTree* avl) {
 
     cout << "# de comparacoes: " << sr.numComparisons << endl;
     cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
+    return sr;
 }
 
 
