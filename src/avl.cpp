@@ -2,7 +2,6 @@
 #include "avl.h"
 #include <iostream>
 #include <chrono>
-#include <algorithm>
 
 using namespace std;
 using namespace chrono;
@@ -17,7 +16,10 @@ namespace AVL {
 
     void new_height(Node* node){
         // Depois da rotação, atualiza a altura
-        node->height = 1 + max(get_height(node->left), get_height(node->right));
+        int left_height = get_height(node->left);
+        int right_height = get_height(node->right);
+        int max_height = (left_height > right_height) ? left_height : right_height; 
+        node-> height = 1 + max_height;
     };
 
     int get_balance(Node* node){
@@ -69,27 +71,21 @@ namespace AVL {
 
         // Rotação
         if (balance < -1 && word < root->left->word) {
-            rotate_right(treeRoot, root);
-            return root;
+            return rotate_right(treeRoot, root);
         }
 
         if (balance > 1 && word > root->right->word) {
-            rotate_left(treeRoot, root);
-            return root;
+            return rotate_left(treeRoot, root);
         }
 
         if (balance < -1 && word > root->left->word) {
-            rotate_left_right(treeRoot, root);
-            return root;
+            return rotate_left_right(treeRoot, root);
         }
 
         if (balance > 1 && word < root->right->word) {
-            rotate_right_left(treeRoot, root);
-            return root;
+            return rotate_right_left(treeRoot, root);
         }
-
         return root;
-        
     }
 
     InsertResult insert(BinaryTree* tree, const std::string& word, int docId) {
