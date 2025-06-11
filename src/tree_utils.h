@@ -77,6 +77,20 @@ struct ConstructResult {
 };
 
 /**
+ * @brief Estrutura usada para retornar estatisticas de insercoes em uma arvore
+ * guarda a arvore e os valores totais e medios do tempo de insercoes por documento
+ * e numero de comparacoes por documento
+ */
+struct ConstructResult {
+    BinaryTree* tree;
+    double totalInsertionTime;
+    double insertionTimeAVG;
+    int totalComparisons;
+    double comparisonsAVG;
+    std::vector<std::string> unique_words;
+};
+
+/**
  * @brief Cria e inicializa uma nova árvore binária de busca
  *
  * @return Ponteiro para a estrutura BinaryTree recém-criada
@@ -185,6 +199,20 @@ void print_tree_recursive(Node* node, std::string prefix, bool left);
  * @param tree ponteiro para a raíz da árvore
  */
 void print_tree(BinaryTree* tree);
+
+/**
+ * @brief Calcula a altura da árvore.
+ * @param tree Arvore a ser medida.
+ * @return A altura da árvore. Retorna -1 para uma árvore vazia.
+ */
+int get_tree_height(const BinaryTree* tree);
+
+/**
+ * @brief Encontra o comprimento do caminho mais curto da raiz até um nó folha.
+ * @param tree A árvore a ser medida.
+ * @return O comprimento do caminho mais curto. Retorna -1 para uma árvore vazia.
+ */
+int get_shortest_path(const BinaryTree* tree);
 
 /**
  * @brief Calcula a altura da árvore.
