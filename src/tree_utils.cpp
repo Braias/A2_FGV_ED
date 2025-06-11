@@ -15,7 +15,7 @@ BinaryTree* create() {
 }
 
 SearchResult search(BinaryTree* tree, const std::string& word) {
-    SearchResult result = {0, {}, 0.0, 0};
+    SearchResult result = {0, {}, 0.0, 0,-1};
     
     // Verifica a existência da árvore
     if (tree->root == nullptr) {
@@ -32,6 +32,7 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
         if (current->word == word) {
             result.found = 1;
             result.documentIds = current->documentIds;
+            result.nodeHeight = current->height;
             break;
         } else if (current->word < word) {
             current = current->right;

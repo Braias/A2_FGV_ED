@@ -7,19 +7,18 @@ using namespace std;
 using namespace chrono;
 
 namespace AVL {
-
     int get_balance(Node* node){
         if (node == nullptr) return 0;
         else {
-            int balance = get_height(node->right) - get_height(node->left);
+            int balance = TREE_UTILS_H::get_height(node->right) - TREE_UTILS_H::get_height(node->left);
             return balance;
         }
     };
 
-    Node* insert_recursive(Node*& treeRoot, Node* root, const std::string& word, int docId, int& numComparisons){
+    Node* insert_recursive(Node*& treeRoot, Node* current, const std::string& word, int docId, int& numComparisons){
 
-        // Verifica se a root é vazio
-        if(root == nullptr) {
+        // Verifica se a current é vazio
+        if(current == nullptr) {
             Node* newNode = new Node{word, {docId}, nullptr, nullptr, nullptr, 1, 0};
             return newNode;
         }
@@ -27,51 +26,51 @@ namespace AVL {
         // Aumenta o número de comparações
         numComparisons++;
         
-        if (word < root->word){
-            root -> left = insert_recursive(treeRoot, root->left, word, docId, numComparisons);
-            if (root -> left) root->left->parent = root;
+        if (word < current->word){
+            current -> left = insert_recursive(treeRoot, current->left, word, docId, numComparisons);
+            if (current -> left) current->left->parent = current;
         }  
-        else if (word > root->word){
-            root->right = insert_recursive(treeRoot, root->right, word, docId, numComparisons);
-            if (root->right) root->right->parent = root;}
+        else if (word > current->word){
+            current->right = insert_recursive(treeRoot, current->right, word, docId, numComparisons);
+            if (current->right) current->right->parent = current;}
         else {
             bool exists = false;
-            for (int id : root->documentIds) {
+            for (int id : current->documentIds) {
                 if (id == docId) {
                     exists = true;
                     break;
                 }
             }
             if (!exists) {
-                root->documentIds.push_back(docId);
+                current->documentIds.push_back(docId);
             }
-            return root;
+            return current;
         }
 
 
         // Atualiza a altura
-        new_height(root);
+        TREE_UTILS_H::new_height(current);
 
         // Verifica balanceamento
-        int balance = get_balance(root);
+        int balance = get_balance(current);
 
         // Rotação
-        if (balance < -1 && word < root->left->word) {
-            return rotate_right(treeRoot, root);
+        if (balance < -1 && word < current->left->word) {
+            return rotate_right(treeRoot, current);
         }
 
-        if (balance > 1 && word > root->right->word) {
-            return rotate_left(treeRoot, root);
+        if (balance > 1 && word > current->right->word) {
+            return rotate_left(treeRoot, current);
         }
 
-        if (balance < -1 && word > root->left->word) {
-            return rotate_left_right(treeRoot, root);
+        if (balance < -1 && word > current->left->word) {
+            return rotate_left_right(treeRoot, current);
         }
 
-        if (balance > 1 && word < root->right->word) {
-            return rotate_right_left(treeRoot, root);
+        if (balance > 1 && word < current->right->word) {
+            return rotate_right_left(treeRoot, current);
         }
-        return root;
+        return current;
     }
 
     InsertResult insert(BinaryTree* tree, const std::string& word, int docId) {

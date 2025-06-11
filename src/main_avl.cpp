@@ -62,6 +62,7 @@ void perform_search(BinaryTree* avl) {
 
     cout << "# de comapracoes: " << sr.numComparisons << endl;
     cout << "Tempo de exec: " << sr.executionTime << " segundos" << endl;
+    cout << "Altura do nó" << sr.nodeHeight << endl;
 }
 
 
