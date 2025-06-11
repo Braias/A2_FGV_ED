@@ -121,8 +121,12 @@ int get_height(Node* node){
 
 void new_height(Node* node){
     if (node == nullptr) return;
+    
     // Depois da rotação, atualiza a altura
-    node->height = 1 + max(get_height(node->left), get_height(node->right));
+    int left_height = get_height(node->left);
+    int right_height = get_height(node->right);
+    int max_height = (left_height > right_height) ? left_height : right_height; 
+    node-> height = 1 + max_height;
 };
 
 void transplant(Node*& treeRoot, Node* u, Node* v) {

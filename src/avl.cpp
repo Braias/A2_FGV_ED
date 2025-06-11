@@ -7,20 +7,6 @@ using namespace std;
 using namespace chrono;
 
 namespace AVL {
-    int get_height(Node* node){
-        if(node == nullptr){
-            return 0;
-        };
-        return node->height;
-    };
-
-    void new_height(Node* node){
-        // Depois da rotação, atualiza a altura
-        int left_height = get_height(node->left);
-        int right_height = get_height(node->right);
-        int max_height = (left_height > right_height) ? left_height : right_height; 
-        node-> height = 1 + max_height;
-    };
 
     int get_balance(Node* node){
         if (node == nullptr) return 0;
