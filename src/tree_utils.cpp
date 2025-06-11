@@ -15,7 +15,7 @@ BinaryTree* create() {
 }
 
 SearchResult search(BinaryTree* tree, const std::string& word) {
-    SearchResult result = {0, {}, 0.0, 0};
+    SearchResult result = {0, {}, 0.0, 0,-1};
     
     // Verifica a existência da árvore
     if (tree->root == nullptr) {
@@ -32,6 +32,7 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
         if (current->word == word) {
             result.found = 1;
             result.documentIds = current->documentIds;
+            result.nodeHeight = current->height;
             break;
         } else if (current->word < word) {
             current = current->right;
@@ -46,28 +47,28 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
     return result;    
 };
     
-void destroyNode(Node* node) {
+void destroy_node(Node* node) {
     // Caso o nó não seja nulo, o nó e seus filhos são destruídos
     if (node != nullptr) {
-        destroyNode(node->left);
-        destroyNode(node->right);
+        destroy_node(node->left);
+        destroy_node(node->right);
         delete node;
     }
 }
 
 void destroy(BinaryTree* tree) {
-    destroyNode(tree->root);
+    destroy_node(tree->root);
     delete tree;
 };
 
-void printIndexRecursive(Node* node) {
+void print_index_recursive(Node* node) {
     if (node == nullptr){
         // Caso base: se o nó for nulo, encerra a recursão
 	    return;
     };
 
     // Percorre primeiro a subárvore da esquerda (ordem simétrica)
-    printIndexRecursive(node->left);
+    print_index_recursive(node->left);
 
     // Imprime a palavra armazenada no nó
     cout << node->word << ": ";
@@ -80,15 +81,15 @@ void printIndexRecursive(Node* node) {
     cout << endl;
 
     // Percorre a subárvore da direita
-    printIndexRecursive(node->right);
+    print_index_recursive(node->right);
 }
 
-void printIndex(BinaryTree* tree) {
-    printIndexRecursive(tree->root);
+void print_index(BinaryTree* tree) {
+    print_index_recursive(tree->root);
 }
 
 
-void printTreeRecursive(Node* node, string prefix, bool left) {
+void print_tree_recursive(Node* node, string prefix, bool left) {
     if (node == nullptr) {
         return;
     };
@@ -103,13 +104,13 @@ void printTreeRecursive(Node* node, string prefix, bool left) {
     cout << node->word << endl;
 
     // Recorre o filho a esquerda
-    printTreeRecursive(node->left, prefix + (left ? "|   " : "    "), true);
+    print_tree_recursive(node->left, prefix + (left ? "|   " : "    "), true);
     // Recorre o filho a direita
-    printTreeRecursive(node->right, prefix + (left ? "|   " : "    "), false);
+    print_tree_recursive(node->right, prefix + (left ? "|   " : "    "), false);
 }
 
-void printTree(BinaryTree* tree) {
-    printTreeRecursive(tree->root, "", false);
+void print_tree(BinaryTree* tree) {
+    print_tree_recursive(tree->root, "", false);
 }
 
 int get_height(Node* node){
@@ -121,8 +122,12 @@ int get_height(Node* node){
 
 void new_height(Node* node){
     if (node == nullptr) return;
+    
     // Depois da rotação, atualiza a altura
-    node->height = 1 + max(get_height(node->left), get_height(node->right));
+    int left_height = get_height(node->left);
+    int right_height = get_height(node->right);
+    int max_height = (left_height > right_height) ? left_height : right_height; 
+    node-> height = 1 + max_height;
 };
 
 void transplant(Node*& treeRoot, Node* u, Node* v) {
@@ -139,9 +144,9 @@ void transplant(Node*& treeRoot, Node* u, Node* v) {
     }
 }
 
-void rotate_left(Node*& treeRoot, Node* root) {
+Node* rotate_left(Node*& treeRoot, Node* root) {
     Node* newRoot = root->right;
-    if (newRoot == nullptr) return;
+    if (newRoot == nullptr) return root;
 
     root->right = newRoot->left;
     if (newRoot->left != nullptr) {
@@ -155,11 +160,12 @@ void rotate_left(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
+    return newRoot;
 }
 
-void rotate_right(Node*& treeRoot, Node* root) {
+Node* rotate_right(Node*& treeRoot, Node* root) {
     Node* newRoot = root->left;
-    if (newRoot == nullptr) return;
+    if (newRoot == nullptr) return root;
 
     root->left = newRoot->right;
     if (newRoot->right != nullptr) {
@@ -173,16 +179,17 @@ void rotate_right(Node*& treeRoot, Node* root) {
 
     new_height(root);
     new_height(newRoot);
+    return newRoot;
 }
 
-void rotate_left_right(Node*& treeRoot, Node* root) {
-    rotate_left(treeRoot, root->left);
-    rotate_right(treeRoot, root);
+Node* rotate_left_right(Node*& treeRoot, Node* root) {
+    root->left = rotate_left(treeRoot, root->left);
+    return rotate_right(treeRoot, root);
 }
 
-void rotate_right_left(Node*& treeRoot, Node* root) {
-    rotate_right(treeRoot, root->right);
-    rotate_left(treeRoot, root);
+Node* rotate_right_left(Node*& treeRoot, Node* root) {
+    root->right = rotate_right(treeRoot, root->right);
+    return rotate_left(treeRoot, root);
 }
 
 int get_tree_height(const BinaryTree* tree) {
