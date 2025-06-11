@@ -162,7 +162,7 @@ int main(int argc, char* argv[]) {
                 return 0;
             }
 
-            cout << "----------Inserção----------\n";
+            cout << "----------Insercao----------\n";
             
             // construir AVL baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
