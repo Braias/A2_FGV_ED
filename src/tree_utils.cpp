@@ -15,7 +15,7 @@ BinaryTree* create() {
 }
 
 SearchResult search(BinaryTree* tree, const std::string& word) {
-    SearchResult result = {0, {}, 0.0, 0};
+    SearchResult result = {0, {}, 0.0, 0,-1};
     
     // Verifica a existência da árvore
     if (tree->root == nullptr) {
@@ -32,6 +32,7 @@ SearchResult search(BinaryTree* tree, const std::string& word) {
         if (current->word == word) {
             result.found = 1;
             result.documentIds = current->documentIds;
+            result.nodeHeight = current->height;
             break;
         } else if (current->word < word) {
             current = current->right;
@@ -121,8 +122,12 @@ int get_height(Node* node){
 
 void new_height(Node* node){
     if (node == nullptr) return;
+    
     // Depois da rotação, atualiza a altura
-    node->height = 1 + max(get_height(node->left), get_height(node->right));
+    int left_height = get_height(node->left);
+    int right_height = get_height(node->right);
+    int max_height = (left_height > right_height) ? left_height : right_height; 
+    node-> height = 1 + max_height;
 };
 
 void transplant(Node*& treeRoot, Node* u, Node* v) {

@@ -20,6 +20,10 @@ struct Node {
     int isRed;     // usado na RBT
 };
 
+int get_height(Node* node);
+
+void new_height(Node* node);
+
 /**
  * @brief Estrutura de uma árvore binária, guarda um ponteiro para a raíz da árvore
  * e um ponteiro para NIL (ponteiro para folhas)
@@ -56,6 +60,7 @@ struct SearchResult {
     std::vector<int> documentIds;
     double executionTime;
     int numComparisons;
+    int nodeHeight;
 };
 
 /**
@@ -69,6 +74,7 @@ struct ConstructResult {
     double insertionTimeAVG;
     int totalComparisons;
     double comparisonsAVG;
+    std::vector<std::string> unique_words;
 };
 
 /**
