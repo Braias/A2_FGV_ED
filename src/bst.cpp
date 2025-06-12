@@ -20,6 +20,7 @@ namespace BST {
         newNode->left = nullptr;  
         newNode->right = nullptr;
         newNode->parent = nullptr;
+        newNode->height = 1;
 
         if (tree->root == nullptr) {  // Árvore vazia
             tree->root = newNode;
@@ -65,7 +66,7 @@ namespace BST {
         }
 
         // Atualiza alturas de baixo pra cima
-        Node* node = newNode->parent;
+        Node* node = newNode;
         while (node != nullptr) {
             int leftHeight = node->left ? node->left->height : 0;
             int rightHeight = node->right ? node->right->height : 0;
