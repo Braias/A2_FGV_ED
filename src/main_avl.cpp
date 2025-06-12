@@ -118,7 +118,7 @@ vector<double> get_search_stats(BinaryTree* avl, const vector<string>& unique_wo
             max_time = search_result.executionTime;
         }
     }
-    //Retorna conjunto de estatiscas para busca
+    //Retorna conjunto de estatísticas para busca
     return {total_time / word_count,max_time,total_comparisons / word_count,total_comparisons};
 }
 

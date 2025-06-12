@@ -26,15 +26,15 @@ ConstructResult construct_bst(vector<string> file_paths) {
 
     for (size_t path_index = 0; path_index < file_paths.size(); path_index++) { // Itera sobre cada documento do diretorio
 
-        string file_content = DataHandling::load_doc(file_paths.at(path_index)); // extrai seu conteudo
+        string file_content = DataHandling::load_doc(file_paths.at(path_index)); // Extrai conteudo do documento
         double time = 0.0;
         int comparisons = 0;
-        DataHandling::Document doc = DataHandling::read_doc(file_paths.at(path_index), doc_id, file_content); // segementa strings unicos
-        vector<DataHandling::WordAppearance> word_appearances = DataHandling::process_doc(doc); // compila strongs unicos em wordAppearnces
+        DataHandling::Document doc = DataHandling::read_doc(file_paths.at(path_index), doc_id, file_content); // Segmenta strings unicos
+        vector<DataHandling::WordAppearance> word_appearances = DataHandling::process_doc(doc); // Compila strongs unicos em wordAppearances
 
         for (size_t appearance_index = 0; appearance_index < word_appearances.size(); appearance_index++) { // Itera sobre cada appearance
             DataHandling::WordAppearance new_node = word_appearances.at(appearance_index);
-            InsertResult inserts = insert(bst, new_node.word, new_node.document_id); // inseri word appearnce como no na BST
+            InsertResult inserts = insert(bst, new_node.word, new_node.document_id); // insere word appearance como nó na BST
             time += inserts.executionTime;
             comparisons += inserts.numComparisons;
             bool found = false;
@@ -52,7 +52,7 @@ ConstructResult construct_bst(vector<string> file_paths) {
 
         totalComparisons += comparisons;
         totalTime += time;
-        doc_id++; // incrementa doc_id para apos completar processamento
+        doc_id++; // Incrementa doc_id apos completar processamento
     }
 
     result.totalComparisons = totalComparisons;
@@ -60,11 +60,11 @@ ConstructResult construct_bst(vector<string> file_paths) {
     result.totalInsertionTime = totalTime;
     result.insertionTimeAVG = totalTime / file_paths.size();
     result.tree = bst;
-    return result; // retornar arovre preenchida
+    return result; // Retornar arvore preenchida
 }
 
 SearchResult perform_search(BinaryTree* bst, string search_word = "") {
-    // toma input do usuario
+    // Recebe input do usuario
     bool default_passed = true;
     if(search_word == ""){
         cout << "Insira a palavra que voce procura: ";
@@ -76,7 +76,7 @@ SearchResult perform_search(BinaryTree* bst, string search_word = "") {
     // Performa busca em bst
     SearchResult sr = search(bst, search_word); 
 
-    // compilar resumo do search
+    // Compila resumo de search
     if(!default_passed){
         if (sr.found ) {
             cout << "A palavra '" << search_word << "' foi encontrada nos seguintes docuemntos: " << endl;
@@ -96,12 +96,13 @@ SearchResult perform_search(BinaryTree* bst, string search_word = "") {
 }
 
 vector<double> get_search_stats(BinaryTree* bst, const vector<string>& unique_words) {
+    // Se não existem palavras, retorna vetor vazio
     if (unique_words.empty()) {
         return {0.0, 0.0, 0.0, 0.0};
     }
 
+    // Inicializa stats relevantes
     double word_count = unique_words.size();
-
     double max_time = 0.0;
     double total_time = 0.0;
     double total_comparisons = 0.0;
@@ -110,17 +111,16 @@ vector<double> get_search_stats(BinaryTree* bst, const vector<string>& unique_wo
         SearchResult search_result = perform_search(bst, word);
         total_time += search_result.executionTime;
         total_comparisons += search_result.numComparisons;
-        // Atualizando tempo maximo de exec
+        // Atualiza tempo maximo de exec
         if (search_result.executionTime > max_time) {
             max_time = search_result.executionTime;
         }
     }
-    //Retornando conjunto de estatiscas para busca
+    //Retorna conjunto de estatísticas para busca
     return {total_time / word_count,max_time,total_comparisons / word_count,total_comparisons};
 }
 
 int main(int argc, char* argv[]) {
-
     if(argc != 4){ // Verifica contagem certa de parâmetros 
         cout << "Numero insuficiente de Argumentos!";
         return 0;
@@ -129,7 +129,7 @@ int main(int argc, char* argv[]) {
     else{
 
         string mode = argv[1];
-        int n_docs = stoi(argv[2]); // Transformacao de string para int
+        int n_docs = stoi(argv[2]); // Transforma string para int
         string directory_path = argv[3];
         BinaryTree* bst;
 
@@ -162,16 +162,18 @@ int main(int argc, char* argv[]) {
 
             cout << "----------Insercao----------\n";
 
-            // construir AVL baseado em parametros da recebidos pela CLI
+            // Constrói BST baseada em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             ConstructResult cr = construct_bst(doc_paths);
             BinaryTree* tree = cr.tree;
 
+            // Computa estatística relevantes
             double avgTime = cr.insertionTimeAVG;
             double avgComp = cr.comparisonsAVG;
             double totalTime = cr.totalInsertionTime;
             int totalComp = cr.totalComparisons;
-
+            
+            // Printa todas as estatísticas
             cout << "Tempo medio: " << avgTime << "\n";
             cout << "Tempo total: " << totalTime << "\n";
             cout << "Numero medio de comparacoes: " << avgComp << "\n";
