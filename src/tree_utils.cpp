@@ -132,15 +132,15 @@ void new_height(Node* node){
 
 void transplant(Node*& treeRoot, Node* u, Node* v) {
     if (u->parent == nullptr) {
-        treeRoot = v;  // u is the actual root
+        treeRoot = v;  // Se u for raíz, v vira raíz da árvore
     } else if (u == u->parent->left) {
-        u->parent->left = v;
+        u->parent->left = v; // Faz o pai apontar para v
     } else {
         u->parent->right = v;
     }
 
     if (v != nullptr) {
-        v->parent = u->parent;
+        v->parent = u->parent; // Conecta v com o novo pai
     }
 }
 
@@ -148,16 +148,18 @@ Node* rotate_left(Node*& treeRoot, Node* root) {
     Node* newRoot = root->right;
     if (newRoot == nullptr) return root;
 
-    root->right = newRoot->left;
+    root->right = newRoot->left; // Substitui o filho direito por filho esquerdo de newRoot
     if (newRoot->left != nullptr) {
-        newRoot->left->parent = root;
+        newRoot->left->parent = root; // Atualiza o pai do filho transferido
     }
 
+    // Substitui root por NewRoot
     transplant(treeRoot, root, newRoot);
 
-    newRoot->left = root;
-    root->parent = newRoot;
+    newRoot->left = root; // root vira filho esquerdo de newRoot
+    root->parent = newRoot; // Atualiza ponteiro de pai
 
+    // Recomputa alturas
     new_height(root);
     new_height(newRoot);
     return newRoot;
@@ -167,34 +169,36 @@ Node* rotate_right(Node*& treeRoot, Node* root) {
     Node* newRoot = root->left;
     if (newRoot == nullptr) return root;
 
-    root->left = newRoot->right;
+    root->left = newRoot->right; // Substitui o filho esquerdo por filho direito de newRoot
     if (newRoot->right != nullptr) {
-        newRoot->right->parent = root;
+        newRoot->right->parent = root; // Atualiza pai do filho transferido
     }
 
+    // Substitui root por NewRoot
     transplant(treeRoot, root, newRoot);
 
-    newRoot->right = root;
-    root->parent = newRoot;
+    newRoot->right = root; // root vira filho direito de newRoot
+    root->parent = newRoot; // Atualiza ponteiro de pai
 
+    // Recomputa alturas
     new_height(root);
     new_height(newRoot);
     return newRoot;
 }
 
 Node* rotate_left_right(Node*& treeRoot, Node* root) {
-    root->left = rotate_left(treeRoot, root->left);
-    return rotate_right(treeRoot, root);
+    root->left = rotate_left(treeRoot, root->left); // Primeiro, rotação à esquerda no filho esquerdo
+    return rotate_right(treeRoot, root); // Depois, rotação à direita no próprio root
 }
 
 Node* rotate_right_left(Node*& treeRoot, Node* root) {
-    root->right = rotate_right(treeRoot, root->right);
-    return rotate_left(treeRoot, root);
+    root->right = rotate_right(treeRoot, root->right); // Primeiro, rotação à direita no filho direito
+    return rotate_left(treeRoot, root); // Depois, rotação à esquerda no próprio root
 }
 
 int get_tree_height(const BinaryTree* tree) {
     if (tree == nullptr || tree->root == nullptr) {
-        return -1;
+        return -1; // Árvore vazia
     }
     return tree->root->height - 1;
 }
@@ -209,12 +213,13 @@ int find_min_depth(const Node* node) {
     }
 
     if (node->left == nullptr) {
-        return 1 + find_min_depth(node->right);
+        return 1 + find_min_depth(node->right); // Só há caminho à direita
     }
     if (node->right == nullptr) {
-        return 1 + find_min_depth(node->left);
+        return 1 + find_min_depth(node->left); // Só há caminho à esquerda
     }
 
+    // Tem ambos os filhos — retorna o menor caminho
     int left_depth = find_min_depth(node->left);
     int right_depth = find_min_depth(node->right);
 

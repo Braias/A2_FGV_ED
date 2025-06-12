@@ -20,10 +20,6 @@ struct Node {
     int isRed;     // usado na RBT
 };
 
-int get_height(Node* node);
-
-void new_height(Node* node);
-
 /**
  * @brief Estrutura de uma árvore binária, guarda um ponteiro para a raíz da árvore
  * e um ponteiro para NIL (ponteiro para folhas)
@@ -94,6 +90,23 @@ BinaryTree* create();
  * @param v Nó que ocupará o lugar de u
  */
 void transplant(Node*& treeRoot, Node* u, Node* v);
+
+/**
+ * @brief Retorna a altura de um nó na árvore.
+ * 
+ * @param node Ponteiro para o nó cuja altura será consultada.
+ * @return Altura do nó. Retorna 0 se o nó for nulo.
+ */
+int get_height(Node* node);
+
+/**
+ * @brief Atualiza a altura de um nó com base nas alturas de seus filhos.
+ * 
+ * Chamado após rotações e inserções
+ * 
+ * @param node Ponteiro para o nó cuja altura será recalculada.
+ */
+void new_height(Node* node);
 
 /**
  * @brief Realiza uma rotação simples à esquerda na subárvore com raíz root
