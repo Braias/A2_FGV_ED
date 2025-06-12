@@ -9,9 +9,9 @@ using namespace std;
 using namespace BST;
 
 vector<string> collect_file_paths(string path, int limit) { 
-    vector<string> file_paths = DataHandling::read_directory(path,limit); // vetor de caminhos para cada documento
+    vector<string> file_paths = DataHandling::read_directory(path,limit); // Vetor de caminhos para cada documento
 
-    if (file_paths.empty()) { // verificar e avisar se vetor estiver vazio
+    if (file_paths.empty()) { // Verifica e avisa se vetor estiver vazio
         cout << "Nenhum arquivo adequado encontrado no diretorio." << endl;
     }
     return file_paths; 
@@ -32,7 +32,7 @@ ConstructResult construct_bst(vector<string> file_paths) {
         DataHandling::Document doc = DataHandling::read_doc(file_paths.at(path_index), doc_id, file_content); // segementa strings unicos
         vector<DataHandling::WordAppearance> word_appearances = DataHandling::process_doc(doc); // compila strongs unicos em wordAppearnces
 
-        for (size_t appearance_index = 0; appearance_index < word_appearances.size(); appearance_index++) { // itera sobre cada appearnce
+        for (size_t appearance_index = 0; appearance_index < word_appearances.size(); appearance_index++) { // Itera sobre cada appearance
             DataHandling::WordAppearance new_node = word_appearances.at(appearance_index);
             InsertResult inserts = insert(bst, new_node.word, new_node.document_id); // inseri word appearnce como no na BST
             time += inserts.executionTime;
@@ -72,7 +72,8 @@ SearchResult perform_search(BinaryTree* bst, string search_word = "") {
         default_passed = false;
     }
 
-    // rodar busca em bst
+
+    // Performa busca em bst
     SearchResult sr = search(bst, search_word); 
 
     // compilar resumo do search
@@ -120,7 +121,7 @@ vector<double> get_search_stats(BinaryTree* bst, const vector<string>& unique_wo
 
 int main(int argc, char* argv[]) {
 
-    if(argc != 4){ // verificar contagem certa de instrucoes 
+    if(argc != 4){ // Verifica contagem certa de parâmetros 
         cout << "Numero insuficiente de Argumentos!";
         return 0;
     }
@@ -128,11 +129,11 @@ int main(int argc, char* argv[]) {
     else{
 
         string mode = argv[1];
-        int n_docs = stoi(argv[2]); // transformacao de string para int
+        int n_docs = stoi(argv[2]); // Transformacao de string para int
         string directory_path = argv[3];
         BinaryTree* bst;
 
-        // execucao de search mode
+        // Execucao de search mode
         if(mode == "search"){
             cout << "----------PROCURANDO DOCUMENTOS----------\n";
 
@@ -141,13 +142,13 @@ int main(int argc, char* argv[]) {
                 return 0;  
             }
             
-            // construir bst baseado em parametros da recebidos pela CLI
+            // Constrói bst baseado em parametros da recebidos pela CLI
             vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
             bst = construct_bst(doc_paths).tree;
 
             cout << "Arvore contruida com sucesso\n";
             cout <<"# documentos: " << n_docs << " caminho: "<< directory_path << "\n";
-            // Executar busca
+            // Executa busca
             perform_search(bst);
         }
 
