@@ -105,10 +105,12 @@ void test_empty_tree_search() {
 
 void test_rotations_right(){
     BinaryTree* tree = create();
+    // Insere nós para fazer árvore ficar desbalanceada à esquerda
     InsertResult result0 = insert(tree, "c", 1);
     InsertResult result2 = insert(tree, "b", 2);
     InsertResult result1 = insert(tree, "a", 3);
-
+    
+    // Ordem final esperada
     assert(tree->root->word == "b");
     assert(tree->root->left->word == "a");
     assert(tree->root->right->word == "c");
@@ -117,10 +119,12 @@ void test_rotations_right(){
 
 void test_rotations_left(){
     BinaryTree* tree = create();
+    // Insere nós para fazer árvore ficar desbalanceada à direita
     InsertResult result1 = insert(tree, "a", 3);
     InsertResult result2 = insert(tree, "b", 2);
     InsertResult result0 = insert(tree, "c", 1);
 
+    // Ordem final esperada
     assert(tree->root->word == "b");
     assert(tree->root->left->word == "a");
     assert(tree->root->right->word == "c");
@@ -129,10 +133,12 @@ void test_rotations_left(){
 
 void test_rotations_left_right(){
     BinaryTree* tree = create();
+    // Insere nós para fazer árvore ficar desbalanceada à esquerda e direita
     InsertResult result0 = insert(tree, "c", 1);
     InsertResult result1 = insert(tree, "a", 3);
     InsertResult result2 = insert(tree, "b", 2);
 
+    // Ordem final esperada    
     assert(tree->root->word == "b");
     assert(tree->root->left->word == "a");
     assert(tree->root->right->word == "c");
@@ -141,10 +147,12 @@ void test_rotations_left_right(){
 
 void test_rotations_right_left(){
     BinaryTree* tree = create();
+        // Insere nós para fazer árvore ficar desbalanceada à direita e esquerda 
     InsertResult result1 = insert(tree, "a", 3);
     InsertResult result0 = insert(tree, "c", 1);
     InsertResult result2 = insert(tree, "b", 2);
 
+    // Ordem final esperada    
     assert(tree->root->word == "b");
     assert(tree->root->left->word == "a");
     assert(tree->root->right->word == "c");
