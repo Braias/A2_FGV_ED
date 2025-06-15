@@ -5,9 +5,6 @@
 #include <string>
 
 namespace RBT {
-    bool is_red(Node* node);
-    bool is_black(Node* node);
-
     void set_color(Node* node, int color);
 
     Node* get_uncle(Node* node);
