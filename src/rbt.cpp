@@ -88,5 +88,46 @@ namespace RBT {
             rotate_left(treeRoot, grandpa);
         }
     }
+    Node* insert_recursive(Node*& treeRoot, Node* current, const std::string& word, int docId, int& numComparisons){
 
+        // Verifica se a current é vazio
+        if(current == nullptr) {
+            Node* newNode = new Node{word, {docId}, nullptr, nullptr, nullptr, 1, 1};
+            return newNode;
+        }
+
+        // Aumenta o número de comparações
+        numComparisons++;
+
+        if (word < current->word){
+            current -> left = insert_recursive(treeRoot, current->left, word, docId, numComparisons);
+            if (current -> left) current->left->parent = current;
+        }
+        else if (word > current->word){
+            current->right = insert_recursive(treeRoot, current->right, word, docId, numComparisons);
+            if (current->right) current->right->parent = current;}
+        else {
+            bool exists = false;
+            for (int id : current->documentIds) {
+                if (id == docId) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                current->documentIds.push_back(docId);
+            }
+            return current;
+        }
+        TREE_UTILS_H::new_height(current);
+
+        if (current->left && current->left->isRed == 1) {
+            fix_insert(treeRoot, current->left);
+        }
+        if (current->right && current->right->isRed == 1) {
+            fix_insert(treeRoot, current->right);
+        }
+
+        return current;
+    }
 }
