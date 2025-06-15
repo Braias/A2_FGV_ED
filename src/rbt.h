@@ -5,7 +5,7 @@
 #include <string>
 
 namespace RBT {
-    void set_color(Node* node, bool isRed);
+    void set_color(Node* node, int isRed);
 
     Node* get_grandpa(Node* node);
     Node* get_uncle(Node* node);
