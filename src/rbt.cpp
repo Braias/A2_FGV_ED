@@ -7,7 +7,7 @@ using namespace std;
 using namespace chrono;
 
 namespace RBT {
-    void set_color(Node* node, bool isRed){
+    void set_color(Node* node, int isRed){
         if (node != nullptr) {
             node->isRed = isRed;
         }
@@ -39,12 +39,12 @@ namespace RBT {
 
         // nó raiz
         if (parent == nullptr) {
-            set_color(node, false);
+            set_color(node, 0);
             return;
         }
 
         // pai preto
-        if (!parent->isRed) {
+        if (parent->isRed == 0) {
             return;
         }
 
@@ -53,10 +53,10 @@ namespace RBT {
         Node* uncle = get_uncle(node);
 
         // pai e tio vermelhos
-        if (uncle->isRed) {
-            set_color(parent, false);
-            set_color(uncle, false);
-            set_color(grandpa, true);
+        if (uncle->isRed == 1) {
+            set_color(parent, 0);
+            set_color(uncle, 0);
+            set_color(grandpa, 1);
             fix_insert(treeRoot, grandpa);
             return;
         }
@@ -77,14 +77,14 @@ namespace RBT {
 
         // nó esquerdo pai esquerdo
         if (node == parent->left && parent == grandpa->left) {
-            set_color(parent, false);
-            set_color(grandpa, true);
+            set_color(parent, 0);
+            set_color(grandpa, 1);
             rotate_right(treeRoot, grandpa);
         }
         // nó direito pai direito
         else if (node == parent->right && parent == grandpa->right) {
-            set_color(parent, false);
-            set_color(grandpa, true);
+            set_color(parent, 0);
+            set_color(grandpa, 1);
             rotate_left(treeRoot, grandpa);
         }
     }
