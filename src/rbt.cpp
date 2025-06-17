@@ -130,4 +130,26 @@ namespace RBT {
 
         return current;
     }
+
+    InsertResult insert(BinaryTree* tree, const std::string& word, int docId) {
+        InsertResult result;
+        // Começa o cronômetro
+        auto start = chrono::high_resolution_clock::now();
+
+        // Inicializa o número de comparações
+        int numComparisons = 0;
+
+        // Insere o nó
+        tree->root = RBT::insert_recursive(tree->root, tree->root, word, docId, numComparisons);
+
+        if (tree->root != nullptr) {
+            set_color(tree->root, 0);
+        }
+
+        // Para o cronômetro
+        auto end = chrono::high_resolution_clock::now();
+        result.executionTime = chrono::duration<double, milli>(end - start).count();
+        result.numComparisons = numComparisons;
+        return result;
+    }
 }
