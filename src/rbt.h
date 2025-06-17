@@ -15,7 +15,7 @@ namespace RBT {
     Node* get_grandpa(Node* node);
     Node* get_uncle(Node* node);
 
-    Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons);
+    Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons, Node** newlyInserted);
     void fix_insert(BinaryTree* tree, Node* node);
 
     InsertResult insert(BinaryTree* tree, const std::string& word, int docId);

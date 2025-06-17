@@ -111,11 +111,12 @@ namespace RBT {
             rotate_left_rbt(tree, grandpa);
         }
     }
-    Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons){
+    Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons, Node** newlyInserted){
 
         // Verifica se a current é vazio
         if(current == tree->NIL) {
             Node* newNode = new Node{word, {docId}, nullptr, tree->NIL, tree->NIL, 1, 1};
+            *newlyInserted = newNode;
             return newNode;
         }
 
@@ -123,11 +124,11 @@ namespace RBT {
         numComparisons++;
 
         if (word < current->word){
-            current -> left = insert_recursive(tree, current->left, word, docId, numComparisons);
+            current -> left = insert_recursive(tree, current->left, word, docId, numComparisons, newlyInserted);
             if (current -> left) current->left->parent = current;
         }
         else if (word > current->word){
-            current -> right = insert_recursive(tree, current->right, word, docId, numComparisons);
+            current -> right = insert_recursive(tree, current->right, word, docId, numComparisons, newlyInserted);
             if (current->right) current->right->parent = current;}
         else {
             bool exists = false;
@@ -153,14 +154,19 @@ namespace RBT {
 
         // Inicializa o número de comparações
         int numComparisons = 0;
+        Node* newlyInserted = nullptr;
 
         // Insere o nó
-        tree->root = RBT::insert_recursive(tree, tree->root, word, docId, numComparisons);
+        tree->root = RBT::insert_recursive(tree, tree->root, word, docId, numComparisons, &newlyInserted);
 
         if (tree->root != nullptr) {
             set_color(tree->root, 0);
         }
 
+        if (newlyInserted != nullptr) {
+            fix_insert(tree, newlyInserted);
+
+        }
         // Para o cronômetro
         auto end = chrono::high_resolution_clock::now();
         result.executionTime = chrono::duration<double, milli>(end - start).count();
