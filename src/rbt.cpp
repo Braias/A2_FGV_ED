@@ -53,7 +53,7 @@ namespace RBT {
         Node* uncle = get_uncle(node);
 
         // pai e tio vermelhos
-        if (uncle->isRed == 1) {
+        if (uncle != nullptr && uncle->isRed == 1) {
             set_color(parent, 0);
             set_color(uncle, 0);
             set_color(grandpa, 1);
