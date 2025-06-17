@@ -143,6 +143,7 @@ namespace RBT {
             }
             return current;
         }
+        TREE_UTILS_H::new_height(current);
 
         return current;
     }
