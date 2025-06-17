@@ -114,8 +114,8 @@ namespace RBT {
     Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons){
 
         // Verifica se a current é vazio
-        if(current == nullptr) {
-            Node* newNode = new Node{word, {docId}, nullptr, nullptr, nullptr, 1, 1};
+        if(current == tree->NIL) {
+            Node* newNode = new Node{word, {docId}, nullptr, tree->NIL, tree->NIL, 1, 1};
             return newNode;
         }
 
@@ -141,13 +141,6 @@ namespace RBT {
                 current->documentIds.push_back(docId);
             }
             return current;
-        }
-
-        if (current->left && current->left->isRed == 1) {
-            fix_insert(tree, current->left);
-        }
-        if (current->right && current->right->isRed == 1) {
-            fix_insert(tree, current->right);
         }
 
         return current;
@@ -203,9 +196,6 @@ namespace RBT {
         newRoot->left = root; // root vira filho esquerdo de newRoot
         root->parent = newRoot; // Atualiza ponteiro de pai
 
-        // Recomputa alturas
-        new_height(root);
-        new_height(newRoot);
         return newRoot;
     }
 
@@ -224,20 +214,7 @@ namespace RBT {
         newRoot->right = root; // root vira filho direito de newRoot
         root->parent = newRoot; // Atualiza ponteiro de pai
 
-        // Recomputa alturas
-        new_height(root);
-        new_height(newRoot);
         return newRoot;
-    }
-
-    Node* rotate_left_right_rbt(BinaryTree* tree, Node* root) {
-        root->left = rotate_left_rbt(tree, root->left); // Primeiro, rotação à esquerda no filho esquerdo
-        return rotate_right_rbt(tree, root); // Depois, rotação à direita no próprio root
-    }
-
-    Node* rotate_right_left(BinaryTree* tree, Node* root) {
-        root->right = rotate_right_rbt(tree, root->right); // Primeiro, rotação à direita no filho direito
-        return rotate_left_rbt(tree, root); // Depois, rotação à esquerda no próprio root
     }
 
 }

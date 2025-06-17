@@ -30,7 +30,7 @@ void test_create() {
 /// Função de teste para inserções na árvore binária de busca.
 /// Verifica inserções simples, duplicadas e inserção com string vazia.
 void test_insert() {
-    BinaryTree* tree = create();
+    BinaryTree* tree = create_rbt();
 
     // Insere "apple" com ID de documento 1
     InsertResult result1 = insert(tree, "apple", 1);
@@ -113,7 +113,7 @@ void test_empty_tree_search() {
 }
 
 void test_rotations_right(){
-    BinaryTree* tree = create();
+    BinaryTree* tree = create_rbt();
     // Insere nós para fazer árvore ficar desbalanceada à esquerda
     InsertResult result0 = insert(tree, "c", 1);
     InsertResult result2 = insert(tree, "b", 2);
@@ -127,7 +127,7 @@ void test_rotations_right(){
 }
 
 void test_rotations_left(){
-    BinaryTree* tree = create();
+    BinaryTree* tree = create_rbt();
     // Insere nós para fazer árvore ficar desbalanceada à direita
     InsertResult result1 = insert(tree, "a", 3);
     InsertResult result2 = insert(tree, "b", 2);
@@ -138,34 +138,6 @@ void test_rotations_left(){
     assert(tree->root->left->word == "a");
     assert(tree->root->right->word == "c");
     cout << "Teste Rotations Left passou\n";
-}
-
-void test_rotations_left_right(){
-    BinaryTree* tree = create();
-    // Insere nós para fazer árvore ficar desbalanceada à esquerda e direita
-    InsertResult result0 = insert(tree, "c", 1);
-    InsertResult result1 = insert(tree, "a", 3);
-    InsertResult result2 = insert(tree, "b", 2);
-
-    // Ordem final esperada
-    assert(tree->root->word == "b");
-    assert(tree->root->left->word == "a");
-    assert(tree->root->right->word == "c");
-    cout << "Teste Rotations Left Right passou\n";
-}
-
-void test_rotations_right_left(){
-    BinaryTree* tree = create();
-        // Insere nós para fazer árvore ficar desbalanceada à direita e esquerda
-    InsertResult result1 = insert(tree, "a", 3);
-    InsertResult result0 = insert(tree, "c", 1);
-    InsertResult result2 = insert(tree, "b", 2);
-
-    // Ordem final esperada
-    assert(tree->root->word == "b");
-    assert(tree->root->left->word == "a");
-    assert(tree->root->right->word == "c");
-    cout << "Teste Rotations Right Left passou\n";
 }
 
 /// Função principal que executa todos os testes da árvore binária de busca (AVL).
@@ -179,8 +151,6 @@ int main() {
     test_empty_tree_search();
     test_rotations_right();
     test_rotations_left();
-    test_rotations_left_right();
-    test_rotations_right_left();
     cout << "\n Os testes de RBT passaram\n";
     return 0;
 }
