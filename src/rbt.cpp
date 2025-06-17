@@ -57,7 +57,7 @@ namespace RBT {
         }
     }
 
-    void fix_insert(Node*& treeRoot, Node* node) {
+    void fix_insert(BinaryTree* tree, Node* node) {
         Node* parent = node->parent;
 
         // nó raiz
@@ -80,20 +80,20 @@ namespace RBT {
             set_color(parent, 0);
             set_color(uncle, 0);
             set_color(grandpa, 1);
-            fix_insert(treeRoot, grandpa);
+            fix_insert(tree, grandpa);
             return;
         }
 
         // tio preto/nulo
         // nó direito pai esquerdo
         if (node == parent->right && parent == grandpa->left) {
-            rotate_left(treeRoot, parent);
+            rotate_left_rbt(tree, parent);
             node = parent;
             parent = node->parent;
         }
         // nó esquerdo pai direito
         else if (node == parent->left && parent == grandpa->right) {
-            rotate_right(treeRoot, parent);
+            rotate_right_rbt(tree, parent);
             node = parent;
             parent = node->parent;
         }
@@ -102,16 +102,16 @@ namespace RBT {
         if (node == parent->left && parent == grandpa->left) {
             set_color(parent, 0);
             set_color(grandpa, 1);
-            rotate_right(treeRoot, grandpa);
+            rotate_right_rbt(tree, grandpa);
         }
         // nó direito pai direito
         else if (node == parent->right && parent == grandpa->right) {
             set_color(parent, 0);
             set_color(grandpa, 1);
-            rotate_left(treeRoot, grandpa);
+            rotate_left_rbt(tree, grandpa);
         }
     }
-    Node* insert_recursive(Node*& treeRoot, Node* current, const std::string& word, int docId, int& numComparisons){
+    Node* insert_recursive(BinaryTree* tree, Node* current, const std::string& word, int docId, int& numComparisons){
 
         // Verifica se a current é vazio
         if(current == nullptr) {
@@ -123,11 +123,11 @@ namespace RBT {
         numComparisons++;
 
         if (word < current->word){
-            current -> left = insert_recursive(treeRoot, current->left, word, docId, numComparisons);
+            current -> left = insert_recursive(tree, current->left, word, docId, numComparisons);
             if (current -> left) current->left->parent = current;
         }
         else if (word > current->word){
-            current->right = insert_recursive(treeRoot, current->right, word, docId, numComparisons);
+            current -> right = insert_recursive(tree, current->right, word, docId, numComparisons);
             if (current->right) current->right->parent = current;}
         else {
             bool exists = false;
@@ -142,13 +142,12 @@ namespace RBT {
             }
             return current;
         }
-        TREE_UTILS_H::new_height(current);
 
         if (current->left && current->left->isRed == 1) {
-            fix_insert(treeRoot, current->left);
+            fix_insert(tree, current->left);
         }
         if (current->right && current->right->isRed == 1) {
-            fix_insert(treeRoot, current->right);
+            fix_insert(tree, current->right);
         }
 
         return current;
@@ -163,7 +162,7 @@ namespace RBT {
         int numComparisons = 0;
 
         // Insere o nó
-        tree->root = RBT::insert_recursive(tree->root, tree->root, word, docId, numComparisons);
+        tree->root = RBT::insert_recursive(tree, tree->root, word, docId, numComparisons);
 
         if (tree->root != nullptr) {
             set_color(tree->root, 0);
@@ -174,6 +173,71 @@ namespace RBT {
         result.executionTime = chrono::duration<double, milli>(end - start).count();
         result.numComparisons = numComparisons;
         return result;
+    }
+
+    void transplant_rbt(BinaryTree* tree , Node* u, Node* v) {
+        if (u->parent == nullptr) {
+            tree -> root = v;  // Se u for raíz, v vira raíz da árvore
+        } else if (u == u->parent->left) {
+            u->parent->left = v; // Faz o pai apontar para v
+        } else {
+            u->parent->right = v;
+        }
+
+        if (v != nullptr) {
+            v->parent = u->parent; // Conecta v com o novo pai
+        }
+    }
+
+    Node* rotate_left_rbt(BinaryTree* tree, Node* root) {
+        Node* newRoot = root->right;
+        if (newRoot == nullptr) return root;
+
+        root->right = newRoot->left; // Substitui o filho direito por filho esquerdo de newRoot
+        if (newRoot->left != nullptr) {
+            newRoot->left->parent = root; // Atualiza o pai do filho transferido
+        }
+
+        transplant_rbt(tree, root, newRoot);
+
+        newRoot->left = root; // root vira filho esquerdo de newRoot
+        root->parent = newRoot; // Atualiza ponteiro de pai
+
+        // Recomputa alturas
+        new_height(root);
+        new_height(newRoot);
+        return newRoot;
+    }
+
+    Node* rotate_right_rbt(BinaryTree* tree, Node* root) {
+        Node* newRoot = root->left;
+        if (newRoot == nullptr) return root;
+
+        root->left = newRoot->right; // Substitui o filho esquerdo por filho direito de newRoot
+        if (newRoot->right != nullptr) {
+            newRoot->right->parent = root; // Atualiza pai do filho transferido
+        }
+
+        // Substitui root por NewRoot
+        transplant_rbt(tree, root, newRoot);
+
+        newRoot->right = root; // root vira filho direito de newRoot
+        root->parent = newRoot; // Atualiza ponteiro de pai
+
+        // Recomputa alturas
+        new_height(root);
+        new_height(newRoot);
+        return newRoot;
+    }
+
+    Node* rotate_left_right_rbt(BinaryTree* tree, Node* root) {
+        root->left = rotate_left_rbt(tree, root->left); // Primeiro, rotação à esquerda no filho esquerdo
+        return rotate_right_rbt(tree, root); // Depois, rotação à direita no próprio root
+    }
+
+    Node* rotate_right_left(BinaryTree* tree, Node* root) {
+        root->right = rotate_right_rbt(tree, root->right); // Primeiro, rotação à direita no filho direito
+        return rotate_left_rbt(tree, root); // Depois, rotação à esquerda no próprio root
     }
 
 }
