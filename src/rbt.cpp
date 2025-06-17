@@ -7,6 +7,29 @@ using namespace std;
 using namespace chrono;
 
 namespace RBT {
+    BinaryTree* create_rbt() {
+        BinaryTree* tree = new BinaryTree;
+        tree->NIL = new Node();
+        tree->NIL->isRed = 0;  // NIL sempre preto
+        tree->NIL->left = tree->NIL->right = tree->NIL->parent = nullptr;
+        tree->root = tree->NIL;
+        return tree;
+    }
+
+    void destroy_node_rbt(Node* node, Node* NIL) {
+        if (node != NIL) {
+            destroy_node_rbt(node->left, NIL);
+            destroy_node_rbt(node->right, NIL);
+            delete node;
+        }
+    }
+
+    void destroy_rbt(BinaryTree* tree) {
+        destroy_node_rbt(tree->root, tree->NIL);
+        delete tree->NIL;
+        delete tree;
+    }
+
     void set_color(Node* node, int isRed){
         if (node != nullptr) {
             node->isRed = isRed;
@@ -152,4 +175,5 @@ namespace RBT {
         result.numComparisons = numComparisons;
         return result;
     }
+
 }
