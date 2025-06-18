@@ -203,6 +203,24 @@ int main(int argc, char* argv[]) {
         if(mode == "all_stats"){
             // TODO: iterate in hundreds over interval given and output csv of stats
             int numDocsIter[10] = {10,50,100,250,500,1000,2500,5000,7500,10000};
+            
+            const std::string csv_header =
+                "NumDocs, "
+                "avgInsertTime, "
+                "avgInsertComp, "
+                "totalInsertTime, "
+                "totalInsertComp, "
+                "avgSearchTime, "
+                "maxSearchTime, "
+                "avgSearchComp, "
+                "totalSearchComp, "
+                "totalHeight, "
+                "shortestPath, "
+                "longestPath";
+
+            std::ofstream RBTStatsFile("rbt_stats.csv");
+            RBTStatsFile << csv_header << endl;
+            
 
             for(int numDocs : numDocsIter){
                 // Constrói RBT baseado em parametros da recebidos pela CLI
@@ -214,14 +232,17 @@ int main(int argc, char* argv[]) {
                 vector<double> search_stats = get_search_stats(tree,constructRes.unique_words);
                 
                 // Computa estatísticas relevantes
-
+                
+                
                 // Estatísticas de Inserção
                 double avgInsertTime = constructRes.insertionTimeAVG;
                 double avgInsertComp = constructRes.comparisonsAVG;
                 double totalInsertTime = constructRes.totalInsertionTime;
                 int totalInsertComp = constructRes.totalComparisons;
+                
 
                 // Estatísticas de Busca
+
                 double avgSearchTime = search_stats.at(0);
                 double maxSearchTime =  search_stats.at(1);
                 double avgSearchComp = search_stats.at(2);
@@ -231,9 +252,25 @@ int main(int argc, char* argv[]) {
                 int treeHeight = get_tree_height(tree);
                 int shortestPath = get_shortest_path(tree);
                 int longestPath = treeHeight;
+    
 
-                cout << "Docs num: " << numDocs << endl;
+                string dataString = 
+                    to_string(numDocs) +
+                    ", " + to_string(avgInsertTime) +
+                    ", " + to_string(avgInsertComp) +
+                    ", " + to_string(totalInsertTime) +
+                    ", " + to_string(totalInsertComp) +
+                    ", " + to_string(avgSearchTime) +
+                    ", " + to_string(maxSearchTime) +
+                    ", " + to_string(avgSearchComp) +
+                    ", " + to_string(totalSearchComp) +
+                    ", " + to_string(treeHeight) +
+                    ", " + to_string(shortestPath) +
+                    ", " + to_string(longestPath);
+
+                    RBTStatsFile << dataString << endl;
             }    
+            RBTStatsFile.close();
             return 1;
         }
     }
