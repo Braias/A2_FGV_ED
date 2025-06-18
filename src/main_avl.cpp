@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <chrono>
+#include <fstream>
 #include "avl.h"
 #include "data.h"
 #include "tree_utils.h"
@@ -133,7 +134,7 @@ int main(int argc, char* argv[]) {
         
         string mode = argv[1];
         int n_docs = stoi(argv[2]); // Transformacao de string para int
-        string directory_path = argv[3];
+        string directoryPath = argv[3];
         BinaryTree* avl;
         
         //Execucao de search mode
@@ -146,11 +147,11 @@ int main(int argc, char* argv[]) {
             }
             
             // Constrói AVL baseado em parametros da recebidos pela CLI
-            vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
+            vector<string> doc_paths = collect_file_paths(directoryPath, n_docs);
             avl = construct_avl(doc_paths).tree;
             
             cout << "Arvore construida com sucesso\n";
-            cout <<"# documentos: " << n_docs << " caminho: "<< directory_path << "\n";
+            cout <<"# documentos: " << n_docs << " caminho: "<< directoryPath << "\n";
             // Executa busca
             perform_search(avl);
         }
@@ -166,7 +167,7 @@ int main(int argc, char* argv[]) {
             cout << "----------Insercao----------\n";
             
             // Constrói AVL baseado em parametros da recebidos pela CLI
-            vector<string> doc_paths = collect_file_paths(directory_path, n_docs);
+            vector<string> doc_paths = collect_file_paths(directoryPath, n_docs);
             ConstructResult cr = construct_avl(doc_paths);
             BinaryTree* tree = cr.tree;
             
@@ -199,8 +200,78 @@ int main(int argc, char* argv[]) {
             cout << "Altura da arvore: " << treeHeight << "\n";
             cout << "Tamanho do menor galho (caminho mais curto): " << shortestPath << "\n";
             cout << "Tamanho do maior galho (caminho mais longo): " << longestPath << "\n";
+        }
+        if(mode == "all_stats"){
+            int numDocsIter[10] = {10,50,100,250,500,1000,2500,5000,7500,10000};
             
+            const std::string csv_header =
+                "NumDocs, "
+                "avgInsertTime, "
+                "avgInsertComp, "
+                "totalInsertTime, "
+                "totalInsertComp, "
+                "avgSearchTime, "
+                "maxSearchTime, "
+                "avgSearchComp, "
+                "totalSearchComp, "
+                "totalHeight, "
+                "shortestPath, "
+                "longestPath";
+
+            std::ofstream AVLStatsFile("avl_stats.csv");
+            AVLStatsFile << csv_header << endl;
             
+
+            for(int numDocs : numDocsIter){
+                // Constrói RBT baseado em parametros da recebidos pela CLI
+                vector<string> docPaths = collect_file_paths(directoryPath, numDocs);
+                ConstructResult constructRes = construct_avl(docPaths);
+
+                BinaryTree* tree = constructRes.tree;
+
+                vector<double> search_stats = get_search_stats(tree,constructRes.unique_words);
+                
+                // Computa estatísticas relevantes
+                
+                
+                // Estatísticas de Inserção
+                double avgInsertTime = constructRes.insertionTimeAVG;
+                double avgInsertComp = constructRes.comparisonsAVG;
+                double totalInsertTime = constructRes.totalInsertionTime;
+                int totalInsertComp = constructRes.totalComparisons;
+                
+
+                // Estatísticas de Busca
+
+                double avgSearchTime = search_stats.at(0);
+                double maxSearchTime =  search_stats.at(1);
+                double avgSearchComp = search_stats.at(2);
+                double totalSearchComp =  search_stats.at(3);
+
+                //Estatísticas de Estrutura
+                int treeHeight = get_tree_height(tree);
+                int shortestPath = get_shortest_path(tree);
+                int longestPath = treeHeight;
+    
+
+                string dataString = 
+                    to_string(numDocs) +
+                    ", " + to_string(avgInsertTime) +
+                    ", " + to_string(avgInsertComp) +
+                    ", " + to_string(totalInsertTime) +
+                    ", " + to_string(totalInsertComp) +
+                    ", " + to_string(avgSearchTime) +
+                    ", " + to_string(maxSearchTime) +
+                    ", " + to_string(avgSearchComp) +
+                    ", " + to_string(totalSearchComp) +
+                    ", " + to_string(treeHeight) +
+                    ", " + to_string(shortestPath) +
+                    ", " + to_string(longestPath);
+
+                    AVLStatsFile << dataString << endl;
+            }    
+            AVLStatsFile.close();
+            return 1;
         }
     }
 }
