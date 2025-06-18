@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <fstream>
+#include <sstream>
 #include "rbt.h"
 #include "data.h"
 #include "tree_utils.h"
@@ -254,21 +255,17 @@ int main(int argc, char* argv[]) {
                 int longestPath = treeHeight;
     
 
-                string dataString = 
-                    to_string(numDocs) +
-                    ", " + to_string(avgInsertTime) +
-                    ", " + to_string(avgInsertComp) +
-                    ", " + to_string(totalInsertTime) +
-                    ", " + to_string(totalInsertComp) +
-                    ", " + to_string(avgSearchTime) +
-                    ", " + to_string(maxSearchTime) +
-                    ", " + to_string(avgSearchComp) +
-                    ", " + to_string(totalSearchComp) +
-                    ", " + to_string(treeHeight) +
-                    ", " + to_string(shortestPath) +
-                    ", " + to_string(longestPath);
+                std::ostringstream dataString;
+                dataString.precision(15);
+                dataString << fixed;
 
-                    RBTStatsFile << dataString << endl;
+                dataString << numDocs << ", " << avgInsertTime << ", " << avgInsertComp << ", " 
+                    << totalInsertTime << ", " << totalInsertComp << ", " << avgSearchTime 
+                    << ", " << maxSearchTime << ", " << avgSearchComp << ", " 
+                    << totalSearchComp << ", " << treeHeight << ", " << shortestPath 
+                    << ", " << longestPath;
+
+                RBTStatsFile << dataString.str() << endl;
             }    
             RBTStatsFile.close();
             return 1;

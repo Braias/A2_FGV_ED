@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <fstream>
+#include <sstream>
 #include "avl.h"
 #include "data.h"
 #include "tree_utils.h"
@@ -252,23 +253,18 @@ int main(int argc, char* argv[]) {
                 int treeHeight = get_tree_height(tree);
                 int shortestPath = get_shortest_path(tree);
                 int longestPath = treeHeight;
-    
+                
+                std::ostringstream dataString;
+                dataString.precision(15);
+                dataString << fixed;
 
-                string dataString = 
-                    to_string(numDocs) +
-                    ", " + to_string(avgInsertTime) +
-                    ", " + to_string(avgInsertComp) +
-                    ", " + to_string(totalInsertTime) +
-                    ", " + to_string(totalInsertComp) +
-                    ", " + to_string(avgSearchTime) +
-                    ", " + to_string(maxSearchTime) +
-                    ", " + to_string(avgSearchComp) +
-                    ", " + to_string(totalSearchComp) +
-                    ", " + to_string(treeHeight) +
-                    ", " + to_string(shortestPath) +
-                    ", " + to_string(longestPath);
+                dataString << numDocs << ", " << avgInsertTime << ", " << avgInsertComp << ", " 
+                    << totalInsertTime << ", " << totalInsertComp << ", " << avgSearchTime 
+                    << ", " << maxSearchTime << ", " << avgSearchComp << ", " 
+                    << totalSearchComp << ", " << treeHeight << ", " << shortestPath 
+                    << ", " << longestPath;
 
-                    AVLStatsFile << dataString << endl;
+                AVLStatsFile << dataString.str() << endl;
             }    
             AVLStatsFile.close();
             return 1;
