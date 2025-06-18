@@ -140,7 +140,7 @@ void test_rotations_left(){
     cout << "Teste Rotations Left passou\n";
 }
 
-/// Função principal que executa todos os testes da árvore binária de busca (AVL).
+/// Função principal que executa todos os testes da árvore binária de busca (RBT).
 int main() {
     cout << "Começando testes RBT\n\n";
 
