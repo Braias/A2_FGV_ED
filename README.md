@@ -17,20 +17,22 @@ Este repositório contém o desenvolvimento do **Trabalho A2** da disciplina de 
 
 ```
 A2_FGV_ED/
-├── src/                # Código-fonte do projeto
-│   ├── bst.cpp        # Implementação da BST
-│   ├── avl.cpp        # Implementação da AVL
-│   ├── rbt.cpp        # Implementação da RBT
-│   ├── data.cpp       # Leitura de arquivos e pré-processamento
-│   ├── tree_utils.cpp # Funções auxiliares e structs comuns
-│   ├── main_bst.cpp   # Interface de linha de comando para BST
-│   ├── main_avl.cpp   # Interface de linha de comando para AVL
-│   ├── main_rbt.cpp   # Interface de linha de comando para RBT
-│   ├── test_bst.cpp   # Arquivo de testes da BST
-├── data/              # Base de dados de documentos (.txt)
-├── docs/              # Relatório, gráficos e análises
-├── Makefile           # Script para compilação automatizada
-└── README.md          # Este arquivo
+├── src/                       # Código-fonte do projeto
+│   ├── bst.cpp               # Implementação da BST
+│   ├── avl.cpp               # Implementação da AVL
+│   ├── rbt.cpp               # Implementação da RBT
+│   ├── data.cpp              # Leitura de arquivos e pré-processamento
+│   ├── tree_utils.cpp        # Funções auxiliares e structs comuns
+│   ├── main_bst.cpp          # Interface de linha de comando para BST
+│   ├── main_avl.cpp          # Interface de linha de comando para AVL
+│   ├── main_rbt.cpp          # Interface de linha de comando para RBT
+│   ├── test_bst.cpp          # Arquivo de testes da BST
+├── data/                     # Base de dados de documentos (.txt)
+├── docs/                     # Relatório, gráficos e análises
+│   ├── imagens_dos_gráficos/ # Imagens dos gráficos gerados para análise
+│   ├── graficos.py           # Código em python utilizado para gerar os gráficos das análises
+├── Makefile                  # Script para compilação automatizada
+└── README.md                 # Este arquivo
 ```
 
 ## Como Compilar
